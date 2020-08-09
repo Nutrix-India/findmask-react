@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
 
 import './App.css'
 
 import axios from 'axios';
 import Resizer from 'react-image-file-resizer';
 
-class Image extends Component{
-  render() {
-  return ( 
-      <div className="image-no-show">
-        <img src={this.state.imagePreviewUrl} alt='Upload an Image'/>
-      </div>
-      )
-    }
-}
 
 class App extends Component {
   componentDidMount(){
@@ -72,7 +62,8 @@ class App extends Component {
     e.preventDefault();
     const form_data = new FormData();
     form_data.append('image', this.state.image, this.state.name);
-    let url = '/api/predict/';
+    let url = process.env.REACT_APP_API_URL;
+
     axios.post(url, form_data, {
       headers: {
         'content-type': 'multipart/form-data'
