@@ -42,7 +42,7 @@ class App extends Component {
             uri => {
               reader.onloadend = () => {
                 this.setState({
-                    image: uri,
+                    image: fileInput,
                     imagePreviewUrl: reader.result,
                     imageClass: 'show'
                   })
