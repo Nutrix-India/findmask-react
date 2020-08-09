@@ -47,7 +47,7 @@ class App extends Component {
                     imageClass: 'show'
                   })
               }
-              reader.readAsDataURL(uri)
+              reader.readAsDataURL(fileInput)
             },
             'blob'
         )
