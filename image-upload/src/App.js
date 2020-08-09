@@ -63,7 +63,8 @@ class App extends Component {
     const form_data = new FormData();
     form_data.append('image', this.state.image, this.state.name);
     let url = process.env.REACT_APP_API_URL;
-
+    console.log(url)
+    
     axios.post(url, form_data, {
       headers: {
         'content-type': 'multipart/form-data'
