@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/*"
-  to = "https://mask-detection-api-diyso3zwua-uc.a.run.app/"
+  to = "/index.html"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
