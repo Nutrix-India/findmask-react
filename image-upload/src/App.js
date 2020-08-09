@@ -37,12 +37,12 @@ class App extends Component {
             416,
             416,
             'JPEG',
-            60,
+            100,
             0,
             uri => {
               reader.onloadend = () => {
                 this.setState({
-                    image: fileInput,
+                    image: uri,
                     imagePreviewUrl: reader.result,
                     imageClass: 'show'
                   })
