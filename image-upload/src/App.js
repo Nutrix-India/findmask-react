@@ -37,7 +37,7 @@ class App extends Component {
             416,
             416,
             'JPEG',
-            100,
+            60,
             0,
             uri => {
               reader.onloadend = () => {
