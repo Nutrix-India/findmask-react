@@ -2,9 +2,5 @@
   from = "/*"
   to = "https://mask-detection-api-diyso3zwua-uc.a.run.app/"
   status = 200
-
-[[headers]]
-  # Define which paths this specific [[headers]] block will cover.
-  for = "/*"
-    [headers.values]
-    Access-Control-Allow-Origin = "*"
+  force = true
+  headers = {X-From = "Netlify"}
