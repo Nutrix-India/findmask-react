@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+
 import './App.css'
+
 import axios from 'axios';
 import Resizer from 'react-image-file-resizer';
 
@@ -14,6 +17,9 @@ class Image extends Component{
 }
 
 class App extends Component {
+  componentDidMount(){
+    document.title = "Mask Detection | Vinay Kudari"
+  }
 
   state = {
     image: null,
@@ -117,8 +123,9 @@ class App extends Component {
 
         <br/>
         <h5>{this.state.response_header}</h5>
-
+        <p>----------------------------------------------------------</p>
         <div className='response'>
+          
           <pre>
             {JSON.stringify(this.state.response, null, 2)}
           </pre>
