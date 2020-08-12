@@ -4,6 +4,13 @@ import './App.css'
 
 import axios from 'axios';
 import Resizer from 'react-image-file-resizer';
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  gtmId: 'GTM-PLQL6SS'
+}
+
+TagManager.initialize(tagManagerArgs)
 
 
 class App extends Component {
