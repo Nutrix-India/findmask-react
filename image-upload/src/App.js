@@ -5,6 +5,11 @@ import './App.css'
 import axios from 'axios';
 import Resizer from 'react-image-file-resizer';
 import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga';
+
+
+ReactGA.initialize('UA-175208548-1');
+ReactGA.pageview('/');
 
 const tagManagerArgs = {
   gtmId: 'GTM-PLQL6SS'
