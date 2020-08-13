@@ -42,12 +42,13 @@ const ImageUploaderComponent = () => {
       ...state,
       header: appStatus.uploading,
     }));
-    const form_data = new FormData();
-    form_data.append("image", image.uri, image.name);
+    const formData = new FormData();
+    formData.append("image", image.uri, image.name);
+    formData.append('consent_to_store', false);
     let url = process.env.REACT_APP_API_URL;
 
     axios
-      .post(url, form_data, {
+      .post(url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
