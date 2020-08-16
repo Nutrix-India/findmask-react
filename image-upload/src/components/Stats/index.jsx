@@ -30,6 +30,7 @@ const Stat = styled.div`
 
 const StatText = styled(Text)`
   padding-left: 10px;
+  font-size: 18px;
   color: ${({ theme }) => theme.colors.blueGreen};
 `;
 
@@ -49,7 +50,11 @@ const prevStatStyle = {
   opacity: 0
 };
 
-const Sparkle = <>&#x2728;</>;
+const emoji = {
+  0: <>&#128373;</>,
+  1: <>&#x2728;</>,
+  2: <>&#x1F637;</>
+}
 
 const getStatStyle = ({ index, currentStatIndex, prevStatindex }) => {
   if (index === currentStatIndex) return currentStatStyle;
@@ -71,9 +76,9 @@ const Stats = () => {
   const totalNoOfFacesRecognized = useSelector(({ data }) => data.stats.total_no_faces);
   const totalFacesWithMasks = useSelector(({ data }) => data.stats.total_no_faces_with_masks);
   const stats = [
-    `We have analyzed ${pluralizeText(noOfImagesAnalyzed, 'image')}!.`,
-    `Our AI recognized ${pluralizeText(totalNoOfFacesRecognized, 'face')}.`,
-    `Our AI recognized ${pluralizeText(totalFacesWithMasks, 'face')} with masks.`
+    `Our AI analyzed ${pluralizeText(noOfImagesAnalyzed, 'image')}!`,
+    `And recognized ${pluralizeText(totalNoOfFacesRecognized, 'face')}`,
+    `Out of which ${pluralizeText(totalFacesWithMasks, 'face')} are having masks.`
   ];
   const [currentStatIndex, setCurrentStatIndex] = useState(0);
   const [prevStatindex, setPrevStatIndex] = useState(stats.length - 1);
@@ -92,7 +97,7 @@ const Stats = () => {
       <StatsContainer>
         {isStatsFetched ? stats.map((stat, index) => (
           <Stat key={index} style={getStatStyle({ index, currentStatIndex, prevStatindex })}>
-            {Sparkle}
+            {emoji[index]}
             <StatText>{stat}</StatText>
           </Stat>
         )) : null}

@@ -113,7 +113,7 @@ const WebCam = () => {
     <Wrapper>
       <Icon onClick={onClose} size={iconSize} imgSrc={getImage('/images/close.svg')} />
       <VideoStream ref={videoRef} autoPlay playsInline />
-      <CameraIcon onClick={captureImage} size={cameraIconSize} imgSrc={getImage('/images/camera.png')} />
+      <CameraIcon onClick={captureImage} size={cameraIconSize} imgSrc={getImage('/images/camera.svg')} />
     </Wrapper>
   );
 };

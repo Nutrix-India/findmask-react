@@ -13,7 +13,8 @@ const FileInput = styled.input`
   display: none;
 `;
 
-const TItle = styled(Text)`
+const Title = styled(Text)`
+  font-size: 16px;
   margin-top: 50px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     width: 66%;
@@ -57,7 +58,7 @@ const ImageInputHandler = () => {
   const isMobileDevice = useContext(MobileContext);
   return (
     <>
-      <TItle>Only choose file types <strong>JPG | GIF | PNG | JPEG</strong></TItle>
+      <Title>A Deep Learning based <u>server-less</u> <strong>REST API</strong> client</Title>
       <FileInput ref={inputRef} type="file" accept="image/*" onChange={handleImageLoad} />
       <ButtonsContainer>
         <Button label="Choose File" onClick={onClick} />

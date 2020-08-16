@@ -30,6 +30,7 @@ const Question = styled.div`
 const Text = styled(TextBlock)`
   color: ${({ theme }) => theme.colors.blueGreen};
   padding-right: 12px;
+  font-size: 18px;
 `;
 
 const Number = styled(Text)`
