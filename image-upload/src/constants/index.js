@@ -1,11 +1,16 @@
+import { isMobileDevice } from '../utils/deviceHelper';
+
+const isMobile = isMobileDevice();
+const size = isMobile ? Math.round(window.innerWidth * 0.85) : 416;
+
 export const canvasDimensions = {
-  width: 416,
-  height: 416
+  width: size,
+  height: size
 };
 
 export const imageDimensions = {
-  width: 416,
-  height: 416
+  width: size,
+  height: size
 };
 
 export const apiStatus = {
@@ -28,7 +33,9 @@ export const lightTheme = {
     blueGrey: '#B6C9D4',
     blueGreenGrey: '#c4d4dc',
     white: '#FFFFFF',
-    black: '#000000'
+    black: '#000000',
+    red: '#C2210E',
+    green: '#84C227'
   }
 };
 

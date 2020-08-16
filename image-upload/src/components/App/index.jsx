@@ -11,12 +11,20 @@ import { mobile } from '../../constants';
 
 const Wrapper = styled.div`
   text-align: center;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    position: relative;
+    margin-bottom: 40px;
+    min-height: calc(100vh - 40px);
+  }
 `;
 
 const Header = styled.div`
   height: 82px;
   background-color: ${({ theme }) => theme.colors.paleGreen};
   position: relative;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    height: 46px;
+  }
 `;
 
 const AppTitleContainer = styled.div`

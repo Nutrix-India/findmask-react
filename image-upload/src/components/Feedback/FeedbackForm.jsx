@@ -5,11 +5,19 @@ import { sendFeedback } from '../../store/actions';
 import { getImage } from '../../utils/imageHelper';
 import Button from '../Button';
 import RoundedIcon from '../RoundedIcon';
+import TextBlock from '../Text';
+import { isMobileDevice } from '../../utils/deviceHelper';
+import { mobile } from '../../constants';
+
+const isMobile = isMobileDevice();
 
 const FormContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Question = styled.div`
@@ -19,10 +27,7 @@ const Question = styled.div`
   flex: 1 1 auto;
 `;
 
-const Text = styled.div`
-  font-size: 20px;
-  line-height: 20px;
-  letter-spacing: 0.05rem;
+const Text = styled(TextBlock)`
   color: ${({ theme }) => theme.colors.blueGreen};
   padding-right: 12px;
 `;
@@ -34,22 +39,46 @@ const Number = styled(Text)`
 
 const SubmitBtn = styled(Button)`
   padding: 8px 10px;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    margin-left: auto;
+  }
 `;
 
 const NavBtn = styled.img`
   cursor: pointer;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    width: 16px;
+  }
+`;
+
+const Option = styled.div`
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    display: flex;
+  }
 `;
 
 const questions = [
   {
     text: 'Number of faces',
     prop: 'faces',
-    formProp: 'actual_no_of_faces'
+    formProp: 'actual_no_of_faces',
+    style: {},
+    optionStyle: {}
   },
   {
     text: 'Number of faces with the masks',
     prop: 'faces_with_mask',
-    formProp: 'actual_no_of_faces_with_masks'
+    formProp: 'actual_no_of_faces_with_masks',
+    style: {
+      mobile: {
+        flexDirection: 'column'
+      }
+    },
+    optionStyle: {
+      mobile: {
+        marginTop: '10px'
+      }
+    }
   }
 ];
 
@@ -92,11 +121,13 @@ const FeedbackForm = () => {
   return (
     <FormContainer>
       {questionIndex !== 0 && <NavBtn src={getImage('/images/prev.svg')} onClick={setIndex(-1)} />}
-      <Question>
+      <Question style={{...(question.style[isMobile ? 'mobile' : 'desktop'] || {})}}>
         <Text>{question.text}</Text>
-        <RoundedIcon size={20} imgSrc={getImage('/images/minus.svg')} onClick={setValue(-1)} />
-        <Number>{question.value}</Number>
-        <RoundedIcon size={20} imgSrc={getImage('/images/plus.svg')} onClick={setValue(1)} />
+        <Option style={{...(question.optionStyle[isMobile ? 'mobile' : 'desktop'] || {})}}>
+          <RoundedIcon size={isMobile ? 18 : 20} imgSrc={getImage('/images/minus.svg')} onClick={setValue(-1)} />
+          <Number>{question.value}</Number>
+          <RoundedIcon size={isMobile ? 18: 20} imgSrc={getImage('/images/plus.svg')} onClick={setValue(1)} />
+        </Option>
       </Question>
       {questionIndex !== questions.length - 1 && <NavBtn src={getImage('/images/next.svg')} onClick={setIndex(1)} />}
       {questionIndex === questions.length - 1 && <SubmitBtn label="Submit" onClick={onSubmit} />}

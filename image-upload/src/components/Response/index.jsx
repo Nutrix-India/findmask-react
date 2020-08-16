@@ -2,18 +2,21 @@ import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useSelector } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
-import { canvasDimensions } from '../../constants';
+import { canvasDimensions, mobile } from '../../constants';
+import { isMobileDevice } from '../../utils/deviceHelper';
 import Button from '../Button';
+
+const isMobile = isMobileDevice();
 
 const jsonPrettyTheme = require('react-json-pretty/dist/monikai');
 
 const IncreaseWidth = keyframes`
   from {
-    width: 0px;
+    ${isMobile ? 'transform: scale(0.5)' : 'width: 0px'};
     opacity: 0.3;
   }
   to {
-    width: ${canvasDimensions.width}px;
+    ${isMobile ? 'transform: scale(1)' : 'width: ' + canvasDimensions.width + 'px'};
     opacity: 1;
   }
 `;
@@ -34,6 +37,13 @@ const ResponseContainer = styled.div`
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: forwards;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    max-height: ${canvasDimensions.height}px;
+    margin-left: 0px;
+    margin-top: 20px;
+    width: ${canvasDimensions.width}px;
+    transform: scale(0.5);
+  }
 `;
 
 const JsonPretty = styled(JSONPretty)`
@@ -58,6 +68,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   padding-bottom: 10px;
   float: right;
+  flex-shrink: 0;
 `;
 
 const Header = styled.div`
@@ -80,6 +91,7 @@ const HRule = styled.div`
   height: 1px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.blueGreenGrey};
+  flex-shrink: 0;
 `;
 
 const copyStates = {

@@ -6,7 +6,7 @@ const initialState = {
   stats: {},
   response: {},
   image: {},
-  isConsentGiven: false,
+  isConsentGiven: true,
   status: null,
   imageInputMode: imageInputModes.chooseFile
 };
@@ -33,7 +33,7 @@ const actionMap = {
   [dataTypes.SET_CONSET_GIVEN] (state, { result }) {
     return {
       ...state,
-      isConsentGiven: result || false
+      isConsentGiven: result || true
     };
   },
   [dataTypes.RESET_DATA] (state) {
@@ -42,7 +42,7 @@ const actionMap = {
       response: {},
       image: {},
       status: null,
-      isConsentGiven: false
+      isConsentGiven: true
     };
   },
   [dataTypes.SET_IMAGE_INPUT_MODE] (state, { result }) {

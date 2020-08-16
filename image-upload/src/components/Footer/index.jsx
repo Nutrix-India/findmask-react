@@ -1,12 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getImage } from '../../utils/imageHelper';
+import { mobile } from '../../constants';
 
 const Wrapper = styled.div`
   margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
 `;
 
 const Product = styled.div`
@@ -15,12 +23,18 @@ const Product = styled.div`
   justify-content: center;
 `;
 
+const BrandLogo = styled.img`
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    width: 76px;
+  }
+`;
+
 const Footer = () => {
   return (
     <Wrapper>
       <Product>
         Product of &nbsp;
-        <img src={getImage('/images/nutrixLogo.svg')} />
+        <BrandLogo src={getImage('/images/nutrixLogo.svg')} />
       </Product>
     </Wrapper>
   );

@@ -1,4 +1,7 @@
 /* eslint-disable no-useless-escape */
+export const isMobileDevice = () => {
+  return typeof window !== 'undefined' && window.screen.width <= 540;
+};
 
 export const isMobile = ({ isServer = false, userAgent = '' }) => {
   if (isServer && !userAgent) return false;

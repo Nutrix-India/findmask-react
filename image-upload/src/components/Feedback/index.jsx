@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendFeedback } from '../../store/actions';
-import { apiStatus } from '../../constants';
+import { apiStatus, mobile } from '../../constants';
 import { apiTypes } from '../../store/actionTypes';
 import InfoContainer from '../InfoContainer';
 import FeedbackForm from './FeedbackForm';
+import TextBlock from '../Text';
 
-const Text = styled.div`
-  font-size: 20px;
-  line-height: 20px;
-  letter-spacing: 0.05rem;
+const Text = styled(TextBlock)`
   color: ${({ theme }) => theme.colors.blueGreen};
 `;
 
@@ -18,6 +16,9 @@ const FeedbackBtnsContainer = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    margin: auto;
+  }
 `;
 
 const ThumbsUp = <>👍🏼</>;
@@ -50,6 +51,13 @@ const ThankUContainer = styled.div`
   justify-content: center;
 `;
 
+const Wrapper = styled(InfoContainer)`
+  height: auto !important;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    flex-wrap: wrap;
+  }
+`;
+
 const Feedback = () => {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
@@ -67,7 +75,7 @@ const Feedback = () => {
     setShowForm(true);
   };
   return (
-    <InfoContainer>
+    <Wrapper>
       {!showForm && !isFeedbackSent && (
         <>
           <Text>Are you happy with our AI agent’s response?</Text>
@@ -91,7 +99,7 @@ const Feedback = () => {
           <Text>Thank you for your feedback !</Text>
         </ThankUContainer>
       )}
-    </InfoContainer>
+    </Wrapper>
   );
 };
 

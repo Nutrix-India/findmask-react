@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useRef, useEffect, useState, useContext } from 'react';
+import styled, { keyframes, ThemeContext } from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { apiTypes } from '../../store/actionTypes';
 import { resetData } from '../../store/actions';
-import { canvasDimensions, apiStatus } from '../../constants';
+import { canvasDimensions, apiStatus, mobile } from '../../constants';
 import { getImage } from '../../utils/imageHelper';
 import Progressbar from '../Progressbar';
 import RoundedIcon from '../RoundedIcon';
@@ -33,6 +33,10 @@ const Scanner = styled.div`
   animation-timing-funtion: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: normal;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    width: 108%;
+    left: -4%;
+  }
 `;
 
 const fadeInScaleAnimation = keyframes`
@@ -85,6 +89,7 @@ const getHeight = (newWidth, aspectRatio) => newWidth / aspectRatio;
 // }
 
 const ImagePreview = ({ className, borderRadius }) => {
+  const theme = useContext(ThemeContext);
   const canvasRef = useRef();
   const image = useSelector(({ data }) => data.image);
   const isResponseReceived = useSelector(
@@ -153,8 +158,8 @@ const ImagePreview = ({ className, borderRadius }) => {
     if (isResponseReceived) {
       // mark faces
       const allFaces = response.image_details.face.id;
-      const maskedFaceColor = 'green';
-      const faceColor = 'red';
+      const maskedFaceColor = theme.colors.green;
+      const faceColor = theme.colors.red;
       Object.keys(allFaces).forEach((faceId) => {
         const face = allFaces[faceId];
         let targetColor = faceColor;
@@ -174,6 +179,7 @@ const ImagePreview = ({ className, borderRadius }) => {
         //   getOriginalY({ transformedY: height, imageY: actualImageDimensions.current.height })
         // ];
         // draw face
+        ctx.lineWidth = 3;
         ctx.strokeStyle = targetColor;
         ctx.strokeRect(x, y, width, height);
       });

@@ -6,6 +6,7 @@ import { apiTypes } from '../../store/actionTypes';
 import { apiStatus } from '../../constants';
 import { pluralizeText } from '../../utils/textHelper';
 import InfoContainer from '../InfoContainer';
+import Text from '../Text';
 
 const StatsContainer = styled.div`
   position: relative;
@@ -27,11 +28,8 @@ const Stat = styled.div`
   transition: top 500ms ease, opacity 500ms ease-out;
 `;
 
-const StatText = styled.div`
+const StatText = styled(Text)`
   padding-left: 10px;
-  font-size: 20px;
-  line-height: 20px;
-  letter-spacing: 0.05rem;
   color: ${({ theme }) => theme.colors.blueGreen};
 `;
 

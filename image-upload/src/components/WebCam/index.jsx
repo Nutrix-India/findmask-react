@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import Resizer from 'react-image-file-resizer';
-import { canvasDimensions, imageInputModes, imageDimensions } from '../../constants';
-import { setImage, resetData, setImageInputMode } from '../../store/actions';
+import { canvasDimensions, imageInputModes } from '../../constants';
+import { resetData, setImageInputMode } from '../../store/actions';
 import { apiTypes } from '../../store/actionTypes';
 import { getImage } from '../../utils/imageHelper';
+import resizeAndStore from '../../utils/resizeAndStore';
 import RoundedIcon from '../RoundedIcon';
 
 const Wrapper = styled.div`
@@ -41,32 +41,6 @@ const CameraIcon = styled(RoundedIcon)`
 const VideoStream = styled.video`
   width: 100%;
 `;
-
-const resizeAndStore = (file, dispatch) => {
-  Resizer.imageFileResizer(
-    file,
-    imageDimensions.width,
-    imageDimensions.height,
-    'JPEG',
-    100,
-    0,
-    (uri) => {
-      console.log(uri);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        dispatch(
-          setImage({
-            uri,
-            name: file.name,
-            previewUrl: reader.result
-          })
-        );
-      };
-      reader.readAsDataURL(uri);
-    },
-    'blob'
-  );
-};
 
 const WebCam = () => {
   const videoRef = useRef();
@@ -109,7 +83,7 @@ const WebCam = () => {
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);  
     canvas.toBlob((blob) => {
-      resizeAndStore(blob, dispatch);
+      resizeAndStore({ file: blob, dispatch });
       // try {
       //   const reader = new FileReader();
       //   reader.onloadend = () => {

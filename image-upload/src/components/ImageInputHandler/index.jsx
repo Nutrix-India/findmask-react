@@ -1,26 +1,25 @@
 import React, { useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import Resizer from 'react-image-file-resizer';
-import { imageDimensions, imageInputModes, mobile } from '../../constants';
+import { imageInputModes, mobile } from '../../constants';
 import { setImage, resetData, setImageInputMode } from '../../store/actions';
 import { apiTypes } from '../../store/actionTypes';
+import resizeAndStore from '../../utils/resizeAndStore';
 import Button from '../Button';
+import Text from '../Text';
 import { Context as MobileContext } from '../../context/MobileContext';
 
 const FileInput = styled.input`
   display: none;
 `;
 
-const TItle = styled.div`
-  font-size: 20px;
-  line-height: 20px;
-  letter-spacing: 0.05rem;
+const TItle = styled(Text)`
   margin-top: 50px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     width: 66%;
     margin: auto;
     margin-top: 26px;
+    padding: 0px 10%;
   }
 `;
 
@@ -33,32 +32,6 @@ const ButtonsContainer = styled.div`
 const TakePicButton = styled(Button)`
   margin-left: 20px;
 `;
-
-const resizeAndStore = (file, dispatch) => {
-    Resizer.imageFileResizer(
-      file,
-      imageDimensions.width,
-      imageDimensions.height,
-      'JPEG',
-      100,
-      0,
-      (uri) => {
-        console.log(uri);
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          dispatch(
-            setImage({
-              uri,
-              name: file.name,
-              previewUrl: reader.result
-            })
-          );
-        };
-        reader.readAsDataURL(uri);
-      },
-      'blob'
-    );
-};
 
 const ImageInputHandler = () => {
   const inputRef = useRef();
@@ -75,7 +48,7 @@ const ImageInputHandler = () => {
     inputRef.current.click();
   };
   const handleImageLoad = (evt) => {
-    resizeAndStore(evt.target.files[0], dispatch);
+    resizeAndStore({ file: evt.target.files[0], dispatch });
   };
   const onTakePicClick = () => {
     resetApp();
