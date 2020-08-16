@@ -31,7 +31,7 @@ const MetaTags = () => {
       <meta name="author" content="Vinay Kudari, Jaswanth Sai Sattenpalli &amp; Vaishnavi Chityala" />
       <meta
         name="keywords"
-        content="mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenpalli, Vaishnavi Chityala"
+        content="mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenpalli, Vaishnavi Chityala, find mask"
       />
       <meta
         name="theme-color"
