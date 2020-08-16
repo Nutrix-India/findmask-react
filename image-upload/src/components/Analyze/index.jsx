@@ -22,7 +22,7 @@ const Checkbox = styled.input.attrs(() => ({ type: 'checkbox' }))`
 `;
 
 const ConsentText = styled.div`
-  font-size: 20px;
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.05rem;
   margin-left: 20px;
