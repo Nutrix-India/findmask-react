@@ -1,15 +1,19 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { appStatus, canvasDimensions } from '../../constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { apiTypes } from '../../store/actionTypes';
+import { resetData } from '../../store/actions';
+import { canvasDimensions, apiStatus } from '../../constants';
+import { getImage } from '../../utils/imageHelper';
 import Progressbar from '../Progressbar';
-import CloseIcon from '../CloseIcon';
+import RoundedIcon from '../RoundedIcon';
 
 const scanAnimation = keyframes`
   0% {
     top: 10px;
   }
   50% {
-    top: ${canvasDimensions.height - 10}px;
+    top: calc(100% - 10px);
   }
   100% {
     top: 10px;
@@ -17,31 +21,48 @@ const scanAnimation = keyframes`
 `;
 
 const Scanner = styled.div`
-  width: ${canvasDimensions.width * 1.2}px;
+  width: 120%;
   height: 2px;
   background-color: red;
   position: absolute;
   top: 10px;
-  left: -${canvasDimensions.width * 0.1}px;
+  left: -10%;
   box-shadow: 1px 1px 4px 1px rgb(255 0 0);
   animation-name: ${scanAnimation};
   animation-duration: 3s;
-  animation-delay: 500ms;
   animation-timing-funtion: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: normal;
 `;
 
-const CanvasContainer = styled.div`
-  width: ${canvasDimensions.width}px;
-  height: ${canvasDimensions.height}px;
-  display: inline-block;
-  position: relative;
+const fadeInScaleAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 `;
 
-const iconSize = 30;
+const CanvasContainer = styled.div`
+  display: inline-block;
+  position: relative;
+  width: ${({ $width }) => `${$width}px`};
+  height: ${({ $height }) => `${$height}px`};
+  border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
+  opacity: 0;
+  transform: scale(0.5);
+  animation-name: ${fadeInScaleAnimation};
+  animation-duration: 800ms;
+  animation-timing-funtion: ease-out;
+  animation-fill-mode: forwards;
+`;
 
-const Icon = styled(CloseIcon)`
+const iconSize = 28;
+
+const Icon = styled(RoundedIcon)`
   position: absolute;
   right: -${iconSize / 2}px;
   top: -${iconSize / 2}px;
@@ -49,38 +70,70 @@ const Icon = styled(CloseIcon)`
 
 const Canvas = styled.canvas`
   background-color: #dcdcdc;
+  border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
 `;
 
 const getWidth = (newHeight, aspectRatio) => newHeight * aspectRatio;
 const getHeight = (newWidth, aspectRatio) => newWidth / aspectRatio;
 
-const ImagePreview = ({ image, uploadProgress, responseData, resetState }) => {
+// const getOriginalX = ({ transformedX, imageX }) => {
+//   Math.round(transformedX / imageX *);
+// }
+
+// const getOriginalY = ({ transformedY, imageY }) => {
+//   Math.round(transformedY / imgDimensions.height * imageY);
+// }
+
+const ImagePreview = ({ className, borderRadius }) => {
   const canvasRef = useRef();
-  const imageDataRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
+  const image = useSelector(({ data }) => data.image);
+  const isResponseReceived = useSelector(
+    ({ apiStatus: apiStatuses }) => apiStatuses[apiTypes.SEND_FOR_ANALYSIS].status === apiStatus.successful
+  );
+  const response = useSelector(({ data }) => data.response);
+  const uploadProgress = useSelector(
+    ({ apiStatus: apiStatuses }) => apiStatuses[apiTypes.SEND_FOR_ANALYSIS].uploadProgress
+  );
+  const isRequesting = useSelector(
+    ({ apiStatus: apiStatuses }) => apiStatuses[apiTypes.SEND_FOR_ANALYSIS].status === apiStatus.requesting
+  );
+  const isAnalyzing = isRequesting && uploadProgress === 100;
+  const isUploading = isRequesting && uploadProgress < 100;
+  const [imageDimensions, setImageDimensions] = useState({ 
+    width: canvasDimensions.width,
+    height: canvasDimensions.height
+  });
   const canvasDataRef = useRef({ aspectRatio: canvasDimensions.width / canvasDimensions.height });
+  const actualImageDimensions = useRef({
+    width: 0,
+    height: 0
+  });
 
   // must use function to override this pointer
   const drawImageOnCanvas = function () {
     const _image = this;
+    actualImageDimensions.current.width = _image.naturalWidth;
+    actualImageDimensions.current.height = _image.naturalHeight;
     const aspectRatio = _image.naturalWidth / _image.naturalHeight;
-    const imageDimensions = imageDataRef.current;
+    const dimensions = {
+      width: 0,
+      height: 0
+    };
     if (aspectRatio < canvasDataRef.current.aspectRatio) {
       // width is overflowing
-      imageDimensions.height = canvasDimensions.height;
-      imageDimensions.y = 0;
-      imageDimensions.width = getWidth(canvasDimensions.height, aspectRatio);
-      imageDimensions.x = Math.round((canvasDimensions.width - imageDimensions.width) / 2);
+      dimensions.height = canvasDimensions.height;
+      dimensions.width = getWidth(canvasDimensions.height, aspectRatio);
     } else {
       // height is overflowing
-      imageDimensions.width = canvasDimensions.width;
-      imageDimensions.x = 0;
-      imageDimensions.height = getHeight(canvasDimensions.width, aspectRatio);
-      imageDimensions.y = Math.round((canvasDimensions.height - imageDimensions.height) / 2);
+      dimensions.width = canvasDimensions.width;
+      dimensions.height = getHeight(canvasDimensions.width, aspectRatio);
     }
 
-    const context = canvasRef.current.getContext('2d');
-    const { x, y, width, height } = imageDimensions;
-    context.drawImage(_image, x, y, width, height);
+    setImageDimensions({ ...dimensions });
+
+    const ctx = canvasRef.current.getContext('2d');
+    const { width, height } = dimensions;
+    ctx.drawImage(_image, 0, 0, width, height);
   };
 
   useEffect(() => {
@@ -90,25 +143,68 @@ const ImagePreview = ({ image, uploadProgress, responseData, resetState }) => {
       imageEl.onload = drawImageOnCanvas;
     } else {
       // clear image
-      const context = canvasRef.current.getContext('2d');
-      context.clearRect(0, 0, canvasDimensions.width, canvasDimensions.height);
+      const ctx = canvasRef.current.getContext('2d');
+      ctx.clearRect(0, 0, canvasDimensions.width, canvasDimensions.height);
     }
-  }, [image]);
+  }, [image.previewUrl]);
+
+  useEffect(() => {
+    const ctx = canvasRef.current.getContext('2d');
+    if (isResponseReceived) {
+      // mark faces
+      const allFaces = response.image_details.face.id;
+      const maskedFaceColor = 'green';
+      const faceColor = 'red';
+      Object.keys(allFaces).forEach((faceId) => {
+        const face = allFaces[faceId];
+        let targetColor = faceColor;
+        if (face.mask_confidence > 0.94) {
+          targetColor = maskedFaceColor;
+        }
+        const {x1: x, y1: y, width, height} = face.face_coordinates;
+        // const [
+        //   originalX,
+        //   originalY,
+        //   originalWidth,
+        //   originalHeight
+        // ] = [
+        //   getOriginalX({ transformedX: x, imageX: actualImageDimensions.current.width }),
+        //   getOriginalY({ transformedY: y, imageY: actualImageDimensions.current.height }),
+        //   getOriginalX({ transformedX: width, imageX: actualImageDimensions.current.width }),
+        //   getOriginalY({ transformedY: height, imageY: actualImageDimensions.current.height })
+        // ];
+        // draw face
+        ctx.strokeStyle = targetColor;
+        ctx.strokeRect(x, y, width, height);
+      });
+    }
+  }, [isResponseReceived]);
+
+  const dispatch = useDispatch();
+  const onCloseClick = () => {
+    dispatch(resetData());
+    dispatch({ type: `${apiTypes.SEND_FOR_ANALYSIS}_RESET_API_CALL` });
+    dispatch({ type: `${apiTypes.SEND_FEEDBACK}_RESET_API_CALL` });
+  };
 
   return (
-    <CanvasContainer>
-      <Icon onClick={resetState} size={iconSize} />
+    <CanvasContainer
+      className={className || ''}
+      width={imageDimensions.width}
+      height={imageDimensions.height}
+      $borderRadius={borderRadius}
+    >
+      <Icon onClick={onCloseClick} size={iconSize} imgSrc={getImage('/images/close.svg')} />
       <Canvas
         ref={canvasRef}
-        width={canvasDimensions.width}
-        height={canvasDimensions.height}
+        width={imageDimensions.width}
+        height={imageDimensions.height}
+        $borderRadius={borderRadius}
       />
-      {responseData.header === appStatus.uploading && (
-        <Progressbar value={uploadProgress} />
+      {isUploading && (
+        <Progressbar value={uploadProgress} borderRadius={borderRadius} />
       )}
-      {responseData.header === appStatus.analyziing && (
-        <Scanner />
-      )}
+      {isAnalyzing && <Scanner />}
     </CanvasContainer>
   );
 };

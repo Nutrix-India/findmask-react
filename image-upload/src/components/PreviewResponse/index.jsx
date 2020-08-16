@@ -1,58 +1,47 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { appStatus } from '../../constants';
+import { useSelector } from 'react-redux';
+import { apiTypes } from '../../store/actionTypes';
+import { canvasDimensions, apiStatus, imageInputModes } from '../../constants';
 import ImagePreview from '../ImagePreview';
 import Response from '../Response';
+import WebCam from '../WebCam';
+
+const borderRadius = 4;
+
+const PreviewResponseContainer = styled.div``;
 
 const Wrapper = styled.div`
-  text-align: left;
-`;
-
-const AnimatedContainer = styled.div`
-  padding: 40px;
-  display: inline-flex;
+  width: 100%;
+  height: ${canvasDimensions.height + 40}px;
+  display: flex;
   align-items: center;
-  ${({ $transform }) => $transform ? `transform: ${$transform}` : ''};
-  transition: transform 1s ease;
+  justify-content: center;
+  padding: 30px 0px;
+  margin: auto;
 `;
 
-const setStyle = ({ setTransform, width }) => {
-  setTransform(`translateX(${(window.innerWidth - width) / 2}px)`);
-};
-
-const PreviewResponse = ({ image, responseData, uploadProgress, resetState }) => {
-  const containerRef = useRef();
-  const [transform, setTransform] = useState('');
-  useEffect(() => {
-    const onResize = () => {
-      const { width } = containerRef.current.getBoundingClientRect();
-      setStyle({ setTransform, width });
-    };
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  }, []);
-
-  const responseWidth = 390;
-
-  useEffect(() => {
-    const { width } = containerRef.current.getBoundingClientRect();
-    setStyle({
-      setTransform,
-      width: width + (responseData.header === appStatus.showingResponse ? responseWidth : 0)
-    }); // 390px is width of response
-  }, [responseData.header]);
+const PreviewResponse = () => {
+  const image = useSelector(({ data }) => data.image);
+  const isResponseReceived = useSelector(
+    ({ apiStatus: apiStatuses }) => apiStatuses[apiTypes.SEND_FOR_ANALYSIS].status === apiStatus.successful
+  );
+  const isWebCamModeActive = useSelector(
+    ({ data }) => data.imageInputMode === imageInputModes.takePic
+  );
 
   return (
-    <Wrapper>
-      <AnimatedContainer ref={containerRef} $transform={transform}>
-        <ImagePreview image={image} responseData={responseData} uploadProgress={uploadProgress} resetState={resetState} />
-        {responseData.header === appStatus.showingResponse && (
-          <Response responseData={responseData} responseWidth={responseWidth} />
+    <PreviewResponseContainer>
+      <Wrapper>
+        {image.previewUrl && (
+          <ImagePreview borderRadius={borderRadius} />
         )}
-      </AnimatedContainer>
-    </Wrapper>
+        {isResponseReceived && (
+          <Response borderRadius={borderRadius} />
+        )}
+        {!image.previewUrl && isWebCamModeActive && <WebCam />}
+      </Wrapper>
+    </PreviewResponseContainer>
   );
 };
 
