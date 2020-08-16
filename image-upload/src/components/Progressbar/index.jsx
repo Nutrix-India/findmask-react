@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
 `;
 
 const Container = styled.div`
@@ -30,14 +31,14 @@ const Bar = styled.div.attrs(({ value }) => ({
   }
 }))`
   height: 100%;
-  background-color: #189fdc;
+  background-color: ${({ theme }) => theme.colors.blueGreen};
   transition: width 300ms ease;
   border-radius: 8px;
 `;
 
-const Progressbar = ({ value }) => {
+const Progressbar = ({ value, borderRadius }) => {
   return (
-    <Wrapper>
+    <Wrapper $borderRadius={borderRadius}>
       <Container>
         <Bar value={value} />
       </Container>

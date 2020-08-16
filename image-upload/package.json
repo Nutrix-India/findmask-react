@@ -8,8 +8,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-image-file-resizer": "^0.3.1",
-    "react-images-upload": "^1.2.8",
     "react-json-pretty": "^2.2.0",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5",
     "styled-components": "^5.1.1"
   },
   "scripts": {
@@ -38,6 +39,7 @@
     "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.8",
     "@testing-library/user-event": "^12.1.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "redux-devtools-extension": "^2.13.8"
   }
 }

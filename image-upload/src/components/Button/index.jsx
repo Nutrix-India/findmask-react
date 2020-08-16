@@ -2,17 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ButtonContainer = styled.div`
-  border-radius: 40px;
-  padding: 8px 32px;
-  background-color: #3f4257;
-  color: white;
-  font-size: 1rem;
-  width: 124px;
+  border-radius: 6px;
+  padding: 14px;
+  background-color: ${({ theme }) => theme.colors.blueGreen};
+  color: ${({ theme }) => theme.colors.paleGreen};
+  font-size: 18px;
+  line-height: 18px;
+  letter-spacing: 0.05rem;
   cursor: pointer;
-  margin: auto;
-  &:hover {
-    background-color: #545972;
-  }
+  display: inline-block;
 `;
 
 const Button = ({ label, onClick, className }) => {

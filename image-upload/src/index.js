@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import './index.css';
+import store from './store';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { ContextProvider as MobileContextProvider } from './context/MobileContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <MobileContextProvider>
+        <App />
+      </MobileContextProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
