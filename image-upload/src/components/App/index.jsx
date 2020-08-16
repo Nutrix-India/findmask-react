@@ -47,6 +47,7 @@ const App = () => {
         <Analyze />
         <Footer />
       </Wrapper>
+      <script src="//code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js" async />
     </ThemeProvider>
   );
 };
