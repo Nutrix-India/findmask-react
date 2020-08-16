@@ -20,7 +20,6 @@ const Title = styled(Text)`
     width: 66%;
     margin: auto;
     margin-top: 26px;
-    padding: 0px 10%;
   }
 `;
 

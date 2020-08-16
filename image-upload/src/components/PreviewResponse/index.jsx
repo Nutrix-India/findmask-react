@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   margin: auto;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     flex-direction: column;
+    height: auto;
     min-height: ${canvasDimensions.height + 60}px;
   }
 `;

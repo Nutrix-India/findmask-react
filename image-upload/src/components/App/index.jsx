@@ -6,7 +6,7 @@ import ImageInputHandler from '../ImageInputHandler';
 import PreviewResponse from '../PreviewResponse';
 import Analyze from '../Analyze';
 import Footer from '../Footer';
-import MetaTags from '../MetaTags';
+// import MetaTags from '../MetaTags';
 import { Context as MobileContext } from '../../context/MobileContext';
 import { mobile } from '../../constants';
 
@@ -51,7 +51,7 @@ const App = () => {
   }, []);
   return (
     <ThemeProvider theme={lightTheme}>
-      <MetaTags />
+      {/* <MetaTags /> */}
       <Wrapper>
         <Header>
           <AppTitleContainer>
