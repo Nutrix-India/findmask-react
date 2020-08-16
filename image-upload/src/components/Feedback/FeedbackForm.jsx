@@ -20,7 +20,7 @@ const Question = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.05rem;
   color: ${({ theme }) => theme.colors.blueGreen};
