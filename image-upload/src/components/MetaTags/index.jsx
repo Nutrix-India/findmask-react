@@ -9,6 +9,7 @@ const MetaTags = () => {
   const canonicalUrl = window.location.origin;
   return (
     <Helmet>
+      <title>{title}</title>
       <meta property="og:title" content={title} />
       <meta property="twitter:title" content={title} />
       <meta

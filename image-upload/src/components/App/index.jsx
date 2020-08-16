@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { lightTheme } from '../../constants';
 import { getImage } from '../../utils/imageHelper';
@@ -43,6 +43,12 @@ const AppIcon = styled.img``;
 
 const App = () => {
   const isMobileDevice = useContext(MobileContext);
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
   return (
     <ThemeProvider theme={lightTheme}>
       <MetaTags />
@@ -57,7 +63,7 @@ const App = () => {
         <Analyze />
         <Footer />
       </Wrapper>
-      <script src="//code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js" async />
+      {/* <script src="https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js" async /> */}
     </ThemeProvider>
   );
 };
