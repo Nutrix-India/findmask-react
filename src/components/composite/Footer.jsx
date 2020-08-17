@@ -21,8 +21,9 @@ const Product = styled.div`
 `;
 
 const BrandLogo = styled.img`
+  height: 16px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
-    width: 76px;
+    height: 10px;
   }
 `;
 
@@ -33,6 +34,11 @@ const ProductTitle = styled.div`
   letter-spacing: 0.1rem;
   position: relative;
   top: -2px;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    font-size: 12px;
+    letter-spacing: 0.05rem;
+    top: 0px;
+  }
 `;
 
 const Footer = () => {

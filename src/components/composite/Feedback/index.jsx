@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendFeedback } from '@actions/index';
 import { apiStatus, mobile } from '@constants/index';
 import { apiTypes } from '@actionTypes/index';
+import { Context as MobileContext } from '@contexts/MobileContext';
 import InfoContainer from '@container/InfoContainer';
 import TextBlock from '@base/Text';
 import FeedbackForm from './FeedbackForm';
@@ -77,33 +78,37 @@ const Feedback = () => {
   const onClickNo = () => {
     setShowForm(true);
   };
+  const isMobileDevice = useContext(MobileContext);
   return (
-    <Wrapper>
-      {!showForm && !isFeedbackSent && (
-        <>
-          <Text>Are you happy with our AI agent’s response?</Text>
-          <FeedbackBtnsContainer>
-            <FeedbackBtn onClick={onClickYes}>
-              <FeedbackBtnText>Yes</FeedbackBtnText>
-              {ThumbsUp}
-            </FeedbackBtn>
-            <VRule />
-            <FeedbackBtn onClick={onClickNo}>
-              <FeedbackBtnText>No</FeedbackBtnText>
-              {ThumbsDown}
-            </FeedbackBtn>
-          </FeedbackBtnsContainer>
-        </>
-      )}
-      {showForm && !isFeedbackSent && <FeedbackForm />}
-      {isFeedbackSent && (
-        <ThankUContainer>
-          {Sparkle}
-          {'  '}
-          <Text>Thank you for your feedback !</Text>
-        </ThankUContainer>
-      )}
-    </Wrapper>
+    <>
+      <Wrapper>
+        {!showForm && !isFeedbackSent && (
+          <>
+            <Text>Are you happy with our AI agent’s response?</Text>
+            <FeedbackBtnsContainer>
+              <FeedbackBtn onClick={onClickYes}>
+                <FeedbackBtnText>Yes</FeedbackBtnText>
+                {ThumbsUp}
+              </FeedbackBtn>
+              <VRule />
+              <FeedbackBtn onClick={onClickNo}>
+                <FeedbackBtnText>No</FeedbackBtnText>
+                {ThumbsDown}
+              </FeedbackBtn>
+            </FeedbackBtnsContainer>
+          </>
+        )}
+        {showForm && !isFeedbackSent && <FeedbackForm />}
+        {isFeedbackSent && (
+          <ThankUContainer>
+            {Sparkle}
+            {'  '}
+            <Text>Thank you for your feedback !</Text>
+          </ThankUContainer>
+        )}
+      </Wrapper>
+      {isMobileDevice && <br />}
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ const {
   PHASE_PRODUCTION_BUILD
 } = require('next/constants');
 
+const withFonts = require('next-fonts');
 const optimizedImages = require('next-optimized-images');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true'
@@ -50,4 +51,4 @@ const nextConfig = (phase) => {
 };
 
 module.exports = (phase) =>
-  withBundleAnalyzer(optimizedImages(nextConfig(phase)));
+  withBundleAnalyzer(optimizedImages(withFonts(nextConfig(phase))));

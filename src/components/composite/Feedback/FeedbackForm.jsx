@@ -159,7 +159,10 @@ const FeedbackForm = () => {
         <NavBtn src={getImage('/images/next.svg')} onClick={setIndex(1)} />
       )}
       {questionIndex === questions.length - 1 && (
-        <SubmitBtn label="Submit" onClick={onSubmit} />
+        <SubmitBtn
+          label={isMobile ? <>&#10004;</> : 'Submit'}
+          onClick={onSubmit}
+        />
       )}
     </FormContainer>
   );

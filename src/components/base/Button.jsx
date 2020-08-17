@@ -29,7 +29,7 @@ const Button = ({ label, onClick, className }) => {
 };
 
 Button.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.node,
   onClick: PropTypes.func,
   className: PropTypes.string
 };
