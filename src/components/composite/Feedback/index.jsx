@@ -22,8 +22,8 @@ const FeedbackBtnsContainer = styled.div`
   }
 `;
 
-const ThumbsUp = <>👍🏼</>;
-const ThumbsDown = <>👎🏼</>;
+const ThumbsUp = <>&#128077;</>;
+const ThumbsDown = <>&#128078;</>;
 
 const FeedbackBtn = styled.div`
   display: flex;
