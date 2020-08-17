@@ -6,7 +6,7 @@ import ImageInputHandler from '@composite/ImageInputHandler';
 import PreviewResponse from '@composite/PreviewResponse';
 import Analyze from '@composite/Analyze';
 import Footer from '@composite/Footer';
-// import MetaTags from '../MetaTags';
+import MetaTags from '@composite/MetaTags';
 import { Context as MobileContext } from '@contexts/MobileContext';
 
 const Wrapper = styled.div`
@@ -48,7 +48,7 @@ const Home = () => {
   }, []);
   return (
     <ThemeProvider theme={lightTheme}>
-      {/* <MetaTags /> */}
+      <MetaTags />
       <Wrapper>
         <Header>
           <AppTitleContainer>
