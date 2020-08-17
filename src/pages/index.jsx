@@ -8,6 +8,7 @@ import Analyze from '@composite/Analyze';
 import Footer from '@composite/Footer';
 import MetaTags from '@composite/MetaTags';
 import { Context as MobileContext } from '@contexts/MobileContext';
+import { initGA, logPageView } from '@utils/googleAnalytics';
 
 const Wrapper = styled.div`
   text-align: center;
@@ -45,7 +46,14 @@ const Home = () => {
     script.src = 'https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js';
     script.async = true;
     document.body.appendChild(script);
+
+    if (!window?.GA_INITIALIZED) {
+      initGA();
+      window.GA_INITIALIZED = true;
+    }
+    logPageView({ page: window.location.pathname });
   }, []);
+
   return (
     <ThemeProvider theme={lightTheme}>
       <MetaTags />

@@ -43,7 +43,8 @@ const nextConfig = (phase) => {
       isProd,
       isProdBuild,
       API_URL: process.env.REACT_APP_API_URL,
-      PUBLIC
+      PUBLIC,
+      GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
     }
   };
 };
