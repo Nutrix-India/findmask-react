@@ -23,6 +23,7 @@ const nextConfig = (phase) => {
   }
 
   return {
+    distDir: 'build',
     assetPrefix,
     analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
     analyzeBrowser: ['browser', 'both'].includes(process.env.BUNDLE_ANALYZE),
