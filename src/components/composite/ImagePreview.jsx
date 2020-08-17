@@ -132,14 +132,20 @@ const ImagePreview = ({ className, borderRadius }) => {
       width: 0,
       height: 0
     };
-    if (aspectRatio < canvasDataRef.current.aspectRatio) {
+    if (
+      aspectRatio < canvasDataRef.current.aspectRatio &&
+      _image.naturalWidth > canvasDimensions.width
+    ) {
       // width is overflowing
       dimensions.height = canvasDimensions.height;
       dimensions.width = getWidth(canvasDimensions.height, aspectRatio);
-    } else {
+    } else if (_image.naturalHeight > canvasDimensions.height) {
       // height is overflowing
       dimensions.width = canvasDimensions.width;
       dimensions.height = getHeight(canvasDimensions.width, aspectRatio);
+    } else {
+      dimensions.width = _image.naturalWidth;
+      dimensions.height = _image.naturalHeight;
     }
 
     setImageDimensions({ ...dimensions });
