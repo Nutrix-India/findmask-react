@@ -11,11 +11,9 @@ import { Context as MobileContext } from '@contexts/MobileContext';
 
 const Wrapper = styled.div`
   text-align: center;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    position: relative;
-    margin-bottom: 40px;
-    min-height: calc(100vh - 40px);
-  }
+  position: relative;
+  margin-bottom: 40px;
+  min-height: calc(100vh - 40px);
 `;
 
 const Header = styled.div`
