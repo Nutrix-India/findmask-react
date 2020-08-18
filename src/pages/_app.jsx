@@ -49,7 +49,7 @@ App.propTypes = {
 };
 
 App.getInitialProps = async ({ Component, ctx }) => {
-  const isServer = !process.browser;
+  const isServer = !!ctx.req;
   return {
     pageProps: Component.getInitialProps
       ? await Component.getInitialProps({ ...ctx, isServer })
