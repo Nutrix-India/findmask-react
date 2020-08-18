@@ -64,6 +64,7 @@ const Home = () => {
               src={getImage(
                 isMobileDevice ? '/mobileLogoWithText.svg' : '/logoWithText.svg'
               )}
+              alt="logo with title"
             />
           </AppTitleContainer>
         </Header>
