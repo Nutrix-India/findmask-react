@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { apiTypes } from '@actionTypes/index';
 import { apiStatus, imageInputModes, mobile } from '@constants/index';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
+import { getImage } from '@utils/imageHelper';
 import ImagePreview from '@composite/ImagePreview';
 import Response from '@composite/Response';
 import WebCam from '@composite/WebCam';
@@ -27,6 +28,13 @@ const Wrapper = styled.div`
   }
 `;
 
+const PlaceHolder = styled.img`
+  width: 250px;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    width: 220px;
+  }
+`;
+
 const PreviewResponse = () => {
   const image = useSelector(({ data }) => data.image);
   const isResponseReceived = useSelector(
@@ -43,6 +51,12 @@ const PreviewResponse = () => {
         {image.previewUrl && <ImagePreview borderRadius={borderRadius} />}
         {isResponseReceived && <Response borderRadius={borderRadius} />}
         {!image.previewUrl && isWebCamModeActive && <WebCam />}
+        {!image.previewUrl && !isWebCamModeActive && (
+          <PlaceHolder
+            src={getImage('/images/placeHolder.svg')}
+            $width={canvasDimensions.width}
+          />
+        )}
       </Wrapper>
     </PreviewResponseContainer>
   );

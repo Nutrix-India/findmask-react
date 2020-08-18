@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   top: calc(100% + 10px);
   left: 0;
   right: 0;
+  padding: 16px;
 `;
 
 const Product = styled.div`
@@ -21,22 +22,20 @@ const Product = styled.div`
 `;
 
 const BrandLogo = styled.img`
-  height: 16px;
+  height: 12px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     height: 10px;
   }
 `;
 
 const ProductTitle = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
+  font-weight: 200;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: 0.05rem;
   position: relative;
-  top: -2px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     font-size: 12px;
-    top: 0px;
   }
 `;
 
@@ -44,13 +43,11 @@ const Footer = () => {
   return (
     <Wrapper>
       <Product>
-        <ProductTitle>Product of &nbsp;</ProductTitle>
-        <div>
-          <BrandLogo
-            src={getImage('/images/nutrixLogo.svg')}
-            alt="nutrix brand logo"
-          />
-        </div>
+        <ProductTitle>&copy; 2020 - All rights reserved. &nbsp;</ProductTitle>
+        <BrandLogo
+          src={getImage('/images/nutrixLogo.svg')}
+          alt="nutrix brand logo"
+        />
       </Product>
     </Wrapper>
   );

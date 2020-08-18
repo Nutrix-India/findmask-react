@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   text-align: center;
   position: relative;
   margin-bottom: 40px;
-  min-height: calc(100vh - 40px);
+  min-height: calc(100vh - 60px);
 `;
 
 const Header = styled.div`
@@ -21,7 +21,7 @@ const Header = styled.div`
   background-color: ${({ theme }) => theme.colors.paleGreen};
   position: relative;
   @media only screen and (max-width: ${mobile.maxWidth}) {
-    height: 46px;
+    height: 54px;
   }
 `;
 
