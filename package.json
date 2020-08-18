@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "next": "9.4.4",
+    "next-fonts": "^1.4.0",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
@@ -38,7 +39,6 @@
     "imagemin-svgo": "^8.0.0",
     "lint-staged": "^10.2.11",
     "next-compose-plugins": "^2.2.0",
-    "next-fonts": "^1.4.0",
     "next-optimized-images": "^2.6.2",
     "prettier": "^2.0.5",
     "redux-devtools-extension": "^2.13.8",
