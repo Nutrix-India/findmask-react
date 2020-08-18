@@ -8,11 +8,10 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
-    "@next/bundle-analyzer": "^9.5.2",
     "axios": "^0.19.2",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^8.0.0",
     "next": "9.4.4",
-    "next-compose-plugins": "^2.2.0",
-    "next-fonts": "^1.4.0",
     "next-optimized-images": "^2.6.2",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
@@ -38,8 +37,6 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "husky": "^4.2.5",
-    "imagemin-optipng": "^8.0.0",
-    "imagemin-svgo": "^8.0.0",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "stylelint": "^13.6.1",

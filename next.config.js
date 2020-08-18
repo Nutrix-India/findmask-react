@@ -5,12 +5,7 @@ const {
   PHASE_PRODUCTION_BUILD
 } = require('next/constants');
 
-const withFonts = require('next-fonts');
 const withOptimizedImages = require('next-optimized-images');
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true'
-});
-const withPlugins = require('next-compose-plugins');
 
 const nextConfig = (phase, defaultConfig) => {
   const isDev = phase === PHASE_DEVELOPMENT_SERVER;
@@ -29,28 +24,16 @@ const nextConfig = (phase, defaultConfig) => {
       API_URL: process.env.REACT_APP_API_URL,
       PUBLIC: '',
       GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
-    }
+    },
+    /// next-optimized-images
+    optimizeImagesInDev: true,
+    removeOriginalExtension: true,
+    optipng: {
+      optimizationLevel: 3
+    },
+    svgo: {}
   };
 };
 
-module.exports = (phase, { defaultConfig }) => {
-  const config = withPlugins(
-    [
-      [withBundleAnalyzer({})],
-      [withFonts],
-      [
-        withOptimizedImages,
-        {
-          optimizeImagesInDev: true,
-          removeOriginalExtension: true,
-          optipng: {
-            optimizationLevel: 3
-          },
-          svgo: {}
-        }
-      ]
-    ],
-    nextConfig(phase, defaultConfig)
-  )(phase, { defaultConfig });
-  return config;
-};
+module.exports = (phase, { defaultConfig }) =>
+  withOptimizedImages(nextConfig(phase, defaultConfig));
