@@ -17,18 +17,13 @@ const App = ({ Component, pageProps, isServer, userAgent }) => {
         <Component {...pageProps} />
         <style jsx global>
           {`
-            @font-face {
-              font-family: 'Apercu';
-              src: url('/fonts/apercu_regular_pro.otf');
-            }
-
             html,
             body {
               padding: 0;
               margin: 0;
-              font-family: Apercu, -apple-system, BlinkMacSystemFont, Segoe UI,
-                Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-                Helvetica Neue, sans-serif;
+              font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+                Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+                sans-serif;
             }
 
             * {

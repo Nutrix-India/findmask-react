@@ -10,6 +10,7 @@ import TextBlock from '@base/Text';
 import FeedbackForm from './FeedbackForm';
 
 const Text = styled(TextBlock)`
+  font-size: 18px;
   color: ${({ theme }) => theme.colors.blueGreen};
 `;
 

@@ -93,15 +93,17 @@ const Stats = () => {
   const [currentStatIndex, setCurrentStatIndex] = useState(0);
   const [prevStatindex, setPrevStatIndex] = useState(stats.length - 1);
   useEffect(() => {
-    const intervalID = window.setTimeout(() => {
-      const newIndex = (currentStatIndex + 1) % stats.length;
-      setCurrentStatIndex(newIndex);
-      setPrevStatIndex((newIndex - 1 + stats.length) % stats.length);
-    }, 3000);
-    return () => {
-      window.clearTimeout(intervalID);
-    };
-  }, [currentStatIndex, stats.length]);
+    if (isStatsFetched) {
+      const intervalID = window.setTimeout(() => {
+        const newIndex = (currentStatIndex + 1) % stats.length;
+        setCurrentStatIndex(newIndex);
+        setPrevStatIndex((newIndex - 1 + stats.length) % stats.length);
+      }, 3000);
+      return () => {
+        window.clearTimeout(intervalID);
+      };
+    }
+  }, [currentStatIndex, isStatsFetched, stats.length]);
   return (
     <InfoContainer>
       <StatsContainer>
