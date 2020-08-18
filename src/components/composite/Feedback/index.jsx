@@ -12,6 +12,8 @@ import FeedbackForm from './FeedbackForm';
 const Text = styled(TextBlock)`
   font-size: 18px;
   color: ${({ theme }) => theme.colors.blueGreen};
+  text-align: center;
+  width: 100%;
 `;
 
 const FeedbackBtnsContainer = styled.div`
@@ -102,9 +104,11 @@ const Feedback = () => {
         {showForm && !isFeedbackSent && <FeedbackForm />}
         {isFeedbackSent && (
           <ThankUContainer>
-            {Sparkle}
-            {'  '}
-            <Text>Thank you for your feedback !</Text>
+            <Text>
+              {Sparkle}
+              {'  '}
+              Thank you for your feedback !
+            </Text>
           </ThankUContainer>
         )}
       </Wrapper>
