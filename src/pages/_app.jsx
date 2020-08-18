@@ -45,6 +45,10 @@ App.propTypes = {
 
 App.getInitialProps = async ({ Component, ctx }) => {
   const isServer = !!ctx.req;
+  console.log('debug mobile context ----', {
+    isServer,
+    headers: ctx.req?.headers
+  });
   return {
     pageProps: Component.getInitialProps
       ? await Component.getInitialProps({ ...ctx, isServer })
