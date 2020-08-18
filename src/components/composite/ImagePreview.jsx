@@ -9,6 +9,7 @@ import { getImage } from '@utils/imageHelper';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import Progressbar from '@base/Progressbar';
 import RoundedIcon from '@base/RoundedIcon';
+import Download from '@base/Download';
 
 const scanAnimation = keyframes`
   0% {
@@ -75,6 +76,12 @@ const Icon = styled(RoundedIcon)`
 const Canvas = styled.canvas`
   background-color: #dcdcdc;
   border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
+`;
+
+const DownloadBtn = styled(Download)`
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
 `;
 
 const getWidth = (newHeight, aspectRatio) => newHeight * aspectRatio;
@@ -227,6 +234,7 @@ const ImagePreview = ({ className, borderRadius }) => {
         height={imageDimensions.height}
         $borderRadius={borderRadius}
       />
+      {isResponseReceived && <DownloadBtn canvasRef={canvasRef} />}
       {isUploading && (
         <Progressbar value={uploadProgress} borderRadius={borderRadius} />
       )}
