@@ -14,6 +14,7 @@ const nextConfig = (phase, defaultConfig) => {
 
   return {
     ...defaultConfig,
+    target: 'serverless',
     distDir: 'build',
     assetPrefix: '',
     assetDirectory: 'static',
