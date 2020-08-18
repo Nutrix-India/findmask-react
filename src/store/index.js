@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { createWrapper } from 'next-redux-wrapper';
 import rootReducer from './reducers';
 import { apiMiddleware } from './middlewares';
