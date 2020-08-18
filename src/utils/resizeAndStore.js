@@ -1,5 +1,6 @@
 import Resizer from 'react-image-file-resizer';
 import { setImage } from '@actions/index';
+import { removeExtension } from '@utils/imageHelper';
 
 const resizeAndStore = ({
   file,
@@ -21,7 +22,9 @@ const resizeAndStore = ({
         dispatch(
           setImage({
             uri,
-            name: file.name || `${window.btoa(Date.now())}.${extension}`,
+            name: `${removeExtension(
+              file.name || window.btoa(Date.now())
+            )}.${extension}`,
             previewUrl: reader.result
           })
         );
