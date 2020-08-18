@@ -6,7 +6,6 @@ import ImageInputHandler from '@composite/ImageInputHandler';
 import PreviewResponse from '@composite/PreviewResponse';
 import Analyze from '@composite/Analyze';
 import Footer from '@composite/Footer';
-import MetaTags from '@composite/MetaTags';
 import { Context as MobileContext } from '@contexts/MobileContext';
 import { initGA, logPageView } from '@utils/googleAnalytics';
 
@@ -56,7 +55,6 @@ const Home = () => {
 
   return (
     <ThemeProvider theme={lightTheme}>
-      <MetaTags />
       <Wrapper>
         <Header>
           <AppTitleContainer>
