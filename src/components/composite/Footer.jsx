@@ -46,7 +46,10 @@ const Footer = () => {
       <Product>
         <ProductTitle>Product of &nbsp;</ProductTitle>
         <div>
-          <BrandLogo src={getImage('/images/nutrixLogo.svg')} />
+          <BrandLogo
+            src={getImage('/images/nutrixLogo.svg')}
+            alt="nutrix brand logo"
+          />
         </div>
       </Product>
     </Wrapper>

@@ -5,6 +5,7 @@ const {
   PHASE_PRODUCTION_BUILD
 } = require('next/constants');
 
+const withPWA = require('next-pwa');
 const withOptimizedImages = require('next-optimized-images');
 
 const nextConfig = (phase, defaultConfig) => {
@@ -14,6 +15,7 @@ const nextConfig = (phase, defaultConfig) => {
 
   return {
     ...defaultConfig,
+    target: 'serverless',
     distDir: 'build',
     assetPrefix: '',
     assetDirectory: 'static',
@@ -25,15 +27,23 @@ const nextConfig = (phase, defaultConfig) => {
       PUBLIC: '',
       GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
     },
-    /// next-optimized-images
+    // next-optimized-images
     optimizeImagesInDev: true,
     removeOriginalExtension: true,
     optipng: {
       optimizationLevel: 3
     },
-    svgo: {}
+    svgo: {},
+    // next-pwa
+    pwa: {
+      dest: 'public',
+      disable: isDev,
+      register: true,
+      scope: '/',
+      sw: 'service-worker.js'
+    }
   };
 };
 
 module.exports = (phase, { defaultConfig }) =>
-  withOptimizedImages(nextConfig(phase, defaultConfig));
+  withPWA(withOptimizedImages(nextConfig(phase, defaultConfig)));
