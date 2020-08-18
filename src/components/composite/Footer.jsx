@@ -31,12 +31,11 @@ const ProductTitle = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.05rem;
   position: relative;
   top: -2px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     font-size: 12px;
-    letter-spacing: 0.05rem;
     top: 0px;
   }
 `;

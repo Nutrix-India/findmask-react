@@ -16,7 +16,6 @@ const nextConfig = (phase, defaultConfig) => {
   const isDev = phase === PHASE_DEVELOPMENT_SERVER;
   const isProd = phase === PHASE_PRODUCTION_SERVER;
   const isProdBuild = phase === PHASE_PRODUCTION_BUILD;
-  const publicDirPath = '/_next';
 
   return {
     ...defaultConfig,
@@ -28,7 +27,7 @@ const nextConfig = (phase, defaultConfig) => {
       isProd,
       isProdBuild,
       API_URL: process.env.REACT_APP_API_URL,
-      PUBLIC: isDev ? '' : publicDirPath,
+      PUBLIC: '',
       GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
     }
   };
