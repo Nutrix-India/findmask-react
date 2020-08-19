@@ -11,10 +11,9 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-around;
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
   left: 0;
   right: 0;
-  padding: 16px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     flex-direction: column;
   }

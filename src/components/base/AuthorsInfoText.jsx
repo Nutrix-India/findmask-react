@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Link = styled.a`
+const Link = styled.a.attrs(() => ({ target: '_blank' }))`
   font-weight: 600;
   :link,
   :visited,
@@ -34,7 +34,7 @@ const AuthorsInfoText = ({ className }) => {
           Jassu
         </Link>
         &nbsp;
-        <Link href="/">Vaish</Link>
+        <Link href="https://www.behance.net/chityalava5022">Vaish</Link>
       </Text>
     </Wrapper>
   );
