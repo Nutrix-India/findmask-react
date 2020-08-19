@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import useButtonState from '@hooks/useButtonState';
 import { mobile } from '@constants/index';
 
 const ButtonContainer = styled.div`
@@ -14,16 +15,26 @@ const ButtonContainer = styled.div`
   cursor: pointer;
   display: inline-block;
   user-select: none;
+  transition: transform 200ms ease-in-out;
+  opacity: ${({ $opacity }) => $opacity};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     padding: 8px 12px;
     font-size: 12px;
     line-height: 15px;
   }
+  :hover {
+    transform: translateY(-2px);
+  }
 `;
 
 const Button = ({ label, onClick, className }) => {
+  const { opacity, onBtnClick } = useButtonState(onClick);
   return (
-    <ButtonContainer className={className} onClick={onClick}>
+    <ButtonContainer
+      className={className}
+      onClick={onBtnClick}
+      $opacity={opacity}
+    >
       {label}
     </ButtonContainer>
   );

@@ -53,9 +53,7 @@ const NavBtn = styled.img`
 `;
 
 const Option = styled.div`
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    display: flex;
-  }
+  display: flex;
 `;
 
 const questions = [

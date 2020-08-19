@@ -18,12 +18,13 @@ const resizeAndStore = ({
     0,
     (uri) => {
       const reader = new FileReader();
+      // console.log(file.name?.trim() || window.btoa(Date.now()));
       reader.onloadend = () => {
         dispatch(
           setImage({
             uri,
             name: `${removeExtension(
-              file.name || window.btoa(Date.now())
+              file.name?.trim() || window.btoa(Date.now())
             )}.${extension}`,
             previewUrl: reader.result
           })

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import ReactGA from 'react-ga';
 import RoundedIcon from '@base/RoundedIcon';
 import { getImage } from '@utils/imageHelper';
 
@@ -16,6 +17,10 @@ const Download = ({ canvasRef, className }) => {
     linkRef.current.href = canvasRef.current.toDataURL();
     linkRef.current.download = `nutrix-ind-${imageName}`;
     linkRef.current.click();
+    ReactGA.event({
+      category: 'User',
+      action: 'download'
+    });
   };
   return (
     <>

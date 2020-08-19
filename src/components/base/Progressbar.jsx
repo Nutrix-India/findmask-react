@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Text from '@base/Text';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -8,9 +9,10 @@ const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.45);
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
@@ -18,11 +20,15 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: inline-block;
-  margin: auto;
-  height: 8px;
+  height: 6px;
   border-radius: 8px;
   width: 60%;
-  background-color: #676767;
+  background-color: ${({ theme }) => theme.colors.blueGreenGrey};
+`;
+
+const Title = styled(Text)`
+  color: ${({ theme }) => theme.colors.paleGreen};
+  padding-bottom: 4px;
 `;
 
 const Bar = styled.div.attrs(({ value }) => ({
@@ -39,6 +45,7 @@ const Bar = styled.div.attrs(({ value }) => ({
 const Progressbar = ({ value, borderRadius }) => {
   return (
     <Wrapper $borderRadius={borderRadius}>
+      <Title>uploading</Title>
       <Container>
         <Bar value={value} />
       </Container>

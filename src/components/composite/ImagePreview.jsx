@@ -107,7 +107,7 @@ const ImagePreview = ({ className, borderRadius }) => {
   const response = useSelector(({ data }) => data.response);
   const uploadProgress = useSelector(
     ({ apiStatus: apiStatuses }) =>
-      apiStatuses[apiTypes.SEND_FOR_ANALYSIS].uploadProgress
+      apiStatuses[apiTypes.SEND_FOR_ANALYSIS].uploadProgress || 0
   );
   const isRequesting = useSelector(
     ({ apiStatus: apiStatuses }) =>
@@ -185,7 +185,7 @@ const ImagePreview = ({ className, borderRadius }) => {
       Object.keys(allFaces).forEach((faceId) => {
         const face = allFaces[faceId];
         let targetColor = faceColor;
-        if (face.mask_confidence > 0.94) {
+        if (face.mask_confidence > 0.96) {
           targetColor = maskedFaceColor;
         }
         const { x1: x, y1: y, width, height } = face.face_coordinates;
