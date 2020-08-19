@@ -42,7 +42,8 @@ const actionMap = {
       response: {},
       image: {},
       status: null,
-      isConsentGiven: true
+      isConsentGiven: true,
+      imageInputMode: imageInputModes.chooseFile
     };
   },
   [dataTypes.SET_IMAGE_INPUT_MODE](state, { result }) {
