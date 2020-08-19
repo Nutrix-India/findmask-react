@@ -33,11 +33,11 @@ const BrandLogo = styled.img`
 `;
 
 const ProductTitle = styled.div`
-  font-weight: 200;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05rem;
   position: relative;
+  color: ${({ theme }) => theme.colors.blueGreen};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     font-size: 12px;
   }
@@ -54,7 +54,7 @@ const Footer = ({ className }) => {
     <Wrapper className={className}>
       <StyledAuthorsText />
       <Product>
-        <ProductTitle>&copy; 2020 - All rights reserved. &nbsp;</ProductTitle>
+        <ProductTitle>&copy; 2020 - All rights reserved.&nbsp;</ProductTitle>
         <div>
           <BrandLogo
             src={getImage('/images/nutrixLogo.svg')}

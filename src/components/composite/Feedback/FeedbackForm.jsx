@@ -41,6 +41,7 @@ const SubmitBtn = styled(Button)`
   color: ${({ theme }) => theme.colors.white};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     margin-left: auto;
+    font-size: 16px;
   }
 `;
 
@@ -160,10 +161,7 @@ const FeedbackForm = () => {
         <NavBtn src={getImage('/images/next.svg')} onClick={setIndex(1)} />
       )}
       {questionIndex === questions.length - 1 && (
-        <SubmitBtn
-          label={isMobile ? <>&#10004;</> : 'Submit'}
-          onClick={onSubmit}
-        />
+        <SubmitBtn label={isMobile ? '\u2713' : 'Submit'} onClick={onSubmit} />
       )}
     </FormContainer>
   );

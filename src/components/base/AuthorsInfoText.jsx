@@ -12,7 +12,8 @@ const Wrapper = styled.div`
 `;
 
 const Link = styled.a.attrs(() => ({ target: '_blank' }))`
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   :link,
   :visited,
   :hover,
