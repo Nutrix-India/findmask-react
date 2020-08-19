@@ -28,7 +28,7 @@ const MetaTags = () => {
       />
       <meta
         name="keywords"
-        content="mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenapalli, Vaishnavi Chityala, find mask"
+        content="mask, mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenapalli, Vaishnavi Chityala, find mask, mask detection online, covid detection online, covid"
       />
       <meta name="theme-color" content={lightTheme.colors.blueGreen} />
       <meta name="twitter:site" content="@nutrix-ind" />

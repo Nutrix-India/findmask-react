@@ -1,23 +1,12 @@
 import React, { useEffect } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { lightTheme } from '@constants/index';
-import ImageInputHandler from '@composite/ImageInputHandler';
-import PreviewResponse from '@composite/PreviewResponse';
-import Analyze from '@composite/Analyze';
-import Footer from '@composite/Footer';
-import Header from '@composite/Header';
+import Home from '@composite/Home';
 import { ContextProvider as MobileContextProvider } from '@contexts/MobileContext';
 import { initGA, logPageView } from '@utils/googleAnalytics';
 
-const Wrapper = styled.div`
-  text-align: center;
-  position: relative;
-  margin-bottom: 40px;
-  min-height: calc(100vh - 60px);
-`;
-
-const Home = ({ isServer, userAgent }) => {
+const RootPage = ({ isServer, userAgent }) => {
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js';
@@ -34,24 +23,18 @@ const Home = ({ isServer, userAgent }) => {
   return (
     <ThemeProvider theme={lightTheme}>
       <MobileContextProvider isServer={isServer} userAgent={userAgent}>
-        <Wrapper>
-          <Header />
-          <ImageInputHandler />
-          <PreviewResponse />
-          <Analyze />
-          <Footer />
-        </Wrapper>
+        <Home />
       </MobileContextProvider>
     </ThemeProvider>
   );
 };
 
-Home.propTypes = {
+RootPage.propTypes = {
   isServer: PropTypes.bool.isRequired,
   userAgent: PropTypes.string.isRequired
 };
 
-Home.getInitialProps = ({ req }) => {
+RootPage.getInitialProps = ({ req }) => {
   const isServer = !!req;
   return {
     isServer,
@@ -59,4 +42,4 @@ Home.getInitialProps = ({ req }) => {
   };
 };
 
-export default Home;
+export default RootPage;

@@ -38,6 +38,7 @@ const Number = styled(Text)`
 
 const SubmitBtn = styled(Button)`
   padding: 8px 10px;
+  color: ${({ theme }) => theme.colors.white};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     margin-left: auto;
   }

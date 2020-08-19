@@ -21,7 +21,7 @@ const Download = ({ canvasRef, className }) => {
     <>
       <RoundedIcon
         imgSrc={getImage('/images/download.svg')}
-        size={50}
+        size={36}
         onClick={onClick}
         className={className}
       />
