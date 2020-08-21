@@ -106,24 +106,18 @@ const FeedbackForm = () => {
   };
   const dispatch = useDispatch();
   const onSubmit = () => {
-    const formObject = Object.keys(formQuestions).reduce(
-      (map, _questionIndex) => {
+    const formData = Object.keys(formQuestions).reduce(
+      (form, _questionIndex) => {
         // eslint-disable-next-line no-underscore-dangle
         const _question = formQuestions[_questionIndex];
-        return {
-          ...map,
-          [_question.formProp]: _question.value
-        };
+        form.append(_question.formProp, _question.value);
+        return form;
       },
-      {}
+      new FormData()
     );
-    dispatch(
-      sendFeedback({
-        image_id: response.image_id,
-        feedback: -1,
-        ...formObject
-      })
-    );
+    formData.append('image_id', response.image_id);
+    formData.append('feedback', -1);
+    dispatch(sendFeedback(formData));
   };
 
   const isMobile = useContext(MobileContext);
