@@ -4,6 +4,7 @@ import { imageInputModes } from '@constants/index';
 
 const initialState = {
   stats: {},
+  threshold: {},
   response: {},
   image: {},
   isConsentGiven: true,
@@ -15,7 +16,8 @@ const actionMap = {
   [`${apiTypes.FETCH_STATS}_SUCCESSFUL`](state, { result }) {
     return {
       ...state,
-      stats: result.stats || {}
+      stats: result.stats || {},
+      threshold: result.threshold || {}
     };
   },
   [`${apiTypes.SEND_FOR_ANALYSIS}_SUCCESSFUL`](state, { result }) {

@@ -23,6 +23,7 @@ export const lightTheme = {
     black: '#000000',
     red: '#C2210E',
     green: '#84C227',
+    yellow: 'yellow',
     nutrixPrimary: '#0067FF'
   }
 };

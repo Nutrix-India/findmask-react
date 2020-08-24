@@ -25,7 +25,9 @@ const nextConfig = (phase, defaultConfig) => {
       isProdBuild,
       API_URL: process.env.REACT_APP_API_URL,
       PUBLIC: '',
-      GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
+      GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID,
+      PROPER_MASK_CONFIDENCE: parseFloat(process.env.PROPER_MASK_CONFIDENCE),
+      IMPROPER_MASK_CONFIDENCE: parseFloat(process.env.IMPROPER_MASK_CONFIDENCE)
     },
     // next-optimized-images
     optimizeImagesInDev: true,

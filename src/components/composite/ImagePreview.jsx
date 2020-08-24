@@ -175,18 +175,28 @@ const ImagePreview = ({ className, borderRadius }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvasDimensions.height, canvasDimensions.width, image.previewUrl]);
 
+  const threshold = useSelector(({ data }) => data.threshold);
+
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d');
     if (isResponseReceived) {
       // mark faces
       const allFaces = response.image_details.face.id;
-      const maskedFaceColor = theme.colors.green;
+      const properMaskFaceColor = theme.colors.green;
+      const improperMaskFaceColor = theme.colors.yellow;
       const faceColor = theme.colors.red;
       Object.keys(allFaces).forEach((faceId) => {
         const face = allFaces[faceId];
         let targetColor = faceColor;
-        if (face.mask_confidence > 0.96) {
-          targetColor = maskedFaceColor;
+        if (
+          face.proper_mask_confidence >= threshold.proper_mask_detection_thresh
+        ) {
+          targetColor = properMaskFaceColor;
+        } else if (
+          face.improper_mask_confidence >=
+          threshold.improper_mask_detection_thresh
+        ) {
+          targetColor = improperMaskFaceColor;
         }
         const { x1: x, y1: y, width, height } = face.face_coordinates;
         // const [
