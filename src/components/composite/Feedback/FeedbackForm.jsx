@@ -13,6 +13,9 @@ const FormContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    flex-wrap: wrap;
+  }
 `;
 
 const Question = styled.div`
@@ -20,9 +23,6 @@ const Question = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1 1 auto;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    padding: 0px 8px;
-  }
 `;
 
 const Text = styled(TextBlock)`
@@ -34,9 +34,6 @@ const Text = styled(TextBlock)`
 const Number = styled(Text)`
   color: ${({ theme }) => theme.colors.black};
   padding: 0px 14px;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    padding: 0px 8px;
-  }
 `;
 
 const SubmitBtn = styled(Button)`
@@ -61,23 +58,16 @@ const Option = styled.div`
 
 const questions = [
   {
-    text: 'No. of faces',
+    text: 'Number of faces',
     prop: 'faces',
     formProp: 'actual_no_of_faces',
     style: {},
     optionStyle: {}
   },
   {
-    text: 'No. of faces with properly worn masks',
-    prop: 'faces_with_properly_worn_masks',
+    text: 'Number of faces with the masks',
+    prop: 'faces_with_mask',
     formProp: 'actual_no_of_faces_with_masks',
-    style: {},
-    optionStyle: {}
-  },
-  {
-    text: 'No. of faces with improperly worn masks',
-    prop: 'faces_with_improperly_worn_masks',
-    formProp: 'actual_no_of_faces_with_masks_worn_improperly',
     style: {
       mobile: {
         flexDirection: 'column'
