@@ -10,6 +10,7 @@ import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import Progressbar from '@base/Progressbar';
 import RoundedIcon from '@base/RoundedIcon';
 import Download from '@base/Download';
+import { Context as MobileContext } from '@contexts/MobileContext';
 
 const scanAnimation = keyframes`
   0% {
@@ -65,12 +66,10 @@ const CanvasContainer = styled.div`
   animation-fill-mode: forwards;
 `;
 
-const iconSize = 28;
-
 const Icon = styled(RoundedIcon)`
   position: absolute;
-  right: -${iconSize / 2}px;
-  top: -${iconSize / 2}px;
+  right: -${({ size }) => size / 2}px;
+  top: -${({ size }) => size / 2}px;
 `;
 
 const Canvas = styled.canvas`
@@ -247,6 +246,9 @@ const ImagePreview = ({ className, borderRadius }) => {
     dispatch({ type: `${apiTypes.SEND_FOR_ANALYSIS}_RESET_API_CALL` });
     dispatch({ type: `${apiTypes.SEND_FEEDBACK}_RESET_API_CALL` });
   };
+
+  const isMobile = useContext(MobileContext);
+  const iconSize = isMobile ? 22 : 28;
 
   return (
     <CanvasContainer

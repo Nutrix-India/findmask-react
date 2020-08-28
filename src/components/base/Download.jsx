@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import ReactGA from 'react-ga';
 import RoundedIcon from '@base/RoundedIcon';
 import { getImage } from '@utils/imageHelper';
+import { Context as MobileContext } from '@contexts/MobileContext';
 
 const Link = styled.a`
   display: none;
@@ -22,11 +23,12 @@ const Download = ({ canvasRef, className }) => {
       action: 'download'
     });
   };
+  const isMobile = useContext(MobileContext);
   return (
     <>
       <RoundedIcon
         imgSrc={getImage('/images/download.svg')}
-        size={36}
+        size={isMobile ? 28 : 36}
         onClick={onClick}
         className={className}
       />
