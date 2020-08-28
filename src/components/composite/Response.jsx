@@ -9,7 +9,7 @@ import JSONPretty from 'react-json-pretty';
 import { desktopCanvasSize, mobile } from '@constants/index';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import { Context as MobileContext } from '@contexts/MobileContext';
-// import Button from '@base/Button';
+import Button from '@base/Button';
 import ButtonSwitch from '@base/ButtonSwitch';
 
 const jsonPrettyTheme = require('react-json-pretty/dist/monikai');
@@ -137,17 +137,17 @@ const Header = styled.div`
 `;
 
 const StyledSwitch = styled(ButtonSwitch)`
-  margin: 0px 12px;
+  margin-left: 12px;
 `;
 
-// const CopyBtn = styled(Button)`
-//   border-radius: 5px;
-//   background-color: ${({ theme }) => theme.colors.blueGrey};
-//   color: ${({ theme }) => theme.colors.white};
-//   text-align: center;
-//   padding: 5px;
-//   font-size: 12px;
-// `;
+const CopyBtn = styled(Button)`
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.colors.blueGrey};
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  padding: 5px;
+  font-size: 12px;
+`;
 
 const HRule = styled.div`
   height: 1px;
@@ -169,7 +169,7 @@ const responseTypes = {
 
 const Response = ({ className, borderRadius }) => {
   const response = useSelector(({ data }) => data.response);
-  // const threshold = useSelector(({ data }) => data.threshold);
+  const threshold = useSelector(({ data }) => data.threshold);
   const [width, setWidth] = useState(0);
   const [copyStatus, setCopyStatus] = useState(copyStates.notUsed);
   const [responseType, setResponseType] = useState(responseTypes.text);
@@ -191,17 +191,28 @@ const Response = ({ className, borderRadius }) => {
     return Object.keys(map).reduce(
       (data, faceId) => {
         const _totalFaces = data[0];
-        const _facesWithProperMask = data[1];
-        const _facesWithImproperMask = data[2];
-        const _facesWithoutMask = data[3];
+        let _facesWithProperMask = data[1];
+        let _facesWithImproperMask = data[2];
+        let _facesWithoutMask = data[3];
+        if (map[faceId]?.pred_class === 'with_mask') {
+          if (
+            map[faceId]?.proper_mask_confidence >=
+            threshold.proper_mask_detection_thresh
+          ) {
+            _facesWithProperMask += 1;
+          } else {
+            _facesWithImproperMask += 1;
+          }
+        } else if (map[faceId]?.pred_class === 'mask_weared_incorrect') {
+          _facesWithImproperMask += 1;
+        } else {
+          _facesWithoutMask += 1;
+        }
         return [
           _totalFaces + 1,
-          _facesWithProperMask +
-            (map[faceId]?.pred_class === 'with_mask' ? 1 : 0),
-          _facesWithImproperMask +
-            (map[faceId]?.pred_class === 'mask_weared_incorrect' ? 1 : 0),
-          _facesWithoutMask +
-            (map[faceId]?.pred_class === 'without_mask' ? 1 : 0)
+          _facesWithProperMask,
+          _facesWithImproperMask,
+          _facesWithoutMask
         ];
       },
       [0, 0, 0, 0]
@@ -209,20 +220,20 @@ const Response = ({ className, borderRadius }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response.image_details.face]);
 
-  // const onClickCopy = () => {
-  //   if (copyStatus !== copyStates.copying) {
-  //     setCopyStatus(copyStates.copying);
-  //     navigator.clipboard
-  //       .writeText(responseText)
-  //       .then(() => {
-  //         setCopyStatus(copyStates.copied);
-  //       })
-  //       .catch((err) => {
-  //         // eslint-disable-next-line no-console
-  //         console.error(err);
-  //       });
-  //   }
-  // };
+  const onClickCopy = () => {
+    if (copyStatus !== copyStates.copying) {
+      setCopyStatus(copyStates.copying);
+      navigator.clipboard
+        .writeText(responseText)
+        .then(() => {
+          setCopyStatus(copyStates.copied);
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err);
+        });
+    }
+  };
 
   useEffect(() => {
     if (copyStatus === copyStates.copied) {
@@ -248,6 +259,9 @@ const Response = ({ className, borderRadius }) => {
     >
       <HeaderContainer>
         <Header>Response</Header>
+        {responseType === responseTypes.json && (
+          <CopyBtn label={copyStatus} onClick={onClickCopy} />
+        )}
         <StyledSwitch
           leftState={{
             label: 'Text',
@@ -260,7 +274,6 @@ const Response = ({ className, borderRadius }) => {
             onClick: onResponseTypeChange(responseTypes.json)
           }}
         />
-        {/* <CopyBtn label={copyStatus} onClick={onClickCopy} /> */}
       </HeaderContainer>
       <HRule />
       {responseType === responseTypes.text && (
