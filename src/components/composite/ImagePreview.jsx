@@ -9,6 +9,7 @@ import { getImage } from '@utils/imageHelper';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import Progressbar from '@base/Progressbar';
 import RoundedIcon from '@base/RoundedIcon';
+import Download from '@base/Download';
 
 const scanAnimation = keyframes`
   0% {
@@ -77,6 +78,12 @@ const Canvas = styled.canvas`
   border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
 `;
 
+const DownloadBtn = styled(Download)`
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+`;
+
 const getWidth = (newHeight, aspectRatio) => newHeight * aspectRatio;
 const getHeight = (newWidth, aspectRatio) => newWidth / aspectRatio;
 
@@ -100,7 +107,7 @@ const ImagePreview = ({ className, borderRadius }) => {
   const response = useSelector(({ data }) => data.response);
   const uploadProgress = useSelector(
     ({ apiStatus: apiStatuses }) =>
-      apiStatuses[apiTypes.SEND_FOR_ANALYSIS].uploadProgress
+      apiStatuses[apiTypes.SEND_FOR_ANALYSIS].uploadProgress || 0
   );
   const isRequesting = useSelector(
     ({ apiStatus: apiStatuses }) =>
@@ -168,18 +175,33 @@ const ImagePreview = ({ className, borderRadius }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvasDimensions.height, canvasDimensions.width, image.previewUrl]);
 
+  const threshold = useSelector(({ data }) => data.threshold);
+
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d');
     if (isResponseReceived) {
       // mark faces
       const allFaces = response.image_details.face.id;
-      const maskedFaceColor = theme.colors.green;
-      const faceColor = theme.colors.red;
+      const properMaskFaceColor = theme.colors.green;
+      const improperMaskFaceColor = theme.colors.yellow;
+      const notWearingMaskColor = theme.colors.red;
+      const faceColor = notWearingMaskColor;
       Object.keys(allFaces).forEach((faceId) => {
         const face = allFaces[faceId];
         let targetColor = faceColor;
-        if (face.mask_confidence > 0.94) {
-          targetColor = maskedFaceColor;
+        if (face.pred_class === 'without_mask') {
+          targetColor = faceColor;
+        } else if (face.pred_class === 'with_mask') {
+          if (
+            face.proper_mask_confidence >=
+            threshold.proper_mask_detection_thresh
+          ) {
+            targetColor = properMaskFaceColor;
+          } else {
+            targetColor = improperMaskFaceColor;
+          }
+        } else if (face.pred_class === 'mask_weared_incorrect') {
+          targetColor = improperMaskFaceColor;
         }
         const { x1: x, y1: y, width, height } = face.face_coordinates;
         // const [
@@ -193,10 +215,27 @@ const ImagePreview = ({ className, borderRadius }) => {
         //   getOriginalX({ transformedX: width, imageX: actualImageDimensions.current.width }),
         //   getOriginalY({ transformedY: height, imageY: actualImageDimensions.current.height })
         // ];
-        // draw face
-        ctx.lineWidth = 3;
+        const lineWidth = 2;
+        // draw rect over face
+        ctx.lineWidth = lineWidth;
         ctx.strokeStyle = targetColor;
         ctx.strokeRect(x, y, width, height);
+        // fill rect for id
+        ctx.fillStyle = targetColor;
+        const fontSize = Math.round(width / 6.43);
+        const lineHeight = fontSize * 1.58;
+        const padding = lineHeight / 2;
+        const idBoxHeight = lineHeight;
+        const idBoxWidth = Math.min(width, fontSize * 3 + (2 * lineHeight) / 5);
+        ctx.fillRect(x - lineWidth / 2, y + height, idBoxWidth, idBoxHeight);
+        // draw text
+        ctx.fillStyle = theme.colors.white;
+        ctx.font = `300 ${fontSize}px -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`;
+        ctx.fillText(
+          `id = ${faceId.toString()}`,
+          x + lineHeight / 5,
+          y + height + lineHeight / 2 + padding / 2
+        );
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -227,6 +266,7 @@ const ImagePreview = ({ className, borderRadius }) => {
         height={imageDimensions.height}
         $borderRadius={borderRadius}
       />
+      {isResponseReceived && <DownloadBtn canvasRef={canvasRef} />}
       {isUploading && (
         <Progressbar value={uploadProgress} borderRadius={borderRadius} />
       )}

@@ -10,3 +10,7 @@ export const dataTypes = {
   RESET_DATA: 'RESET_DATA',
   SET_IMAGE_INPUT_MODE: 'SET_IMAGE_INPUT_MODE'
 };
+
+export const helperTypes = {
+  SET_SHOW_ORIENTATION_MSG: 'SET_SHOW_ORIENTATION_MSG'
+};

@@ -71,15 +71,17 @@ const Feedback = () => {
   );
   const response = useSelector(({ data }) => data.response);
   const onClickYes = () => {
-    dispatch(
-      sendFeedback({
-        image_id: response.image_id,
-        feedback: 1
-      })
-    );
+    const formData = new FormData();
+    formData.append('image_id', response.image_id);
+    formData.append('feedback', 1);
+    dispatch(sendFeedback(formData));
   };
   const onClickNo = () => {
     setShowForm(true);
+    // const formData = new FormData();
+    // formData.append('image_id', response.image_id);
+    // formData.append('feedback', -1);
+    // dispatch(sendFeedback(formData));
   };
   const isMobileDevice = useContext(MobileContext);
   return (

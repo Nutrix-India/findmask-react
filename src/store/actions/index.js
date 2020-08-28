@@ -1,4 +1,4 @@
-import { apiTypes, dataTypes } from '@actionTypes/index';
+import { apiTypes, dataTypes, helperTypes } from '@actionTypes/index';
 
 export const fetchStats = () => (dispatch) =>
   dispatch({
@@ -42,4 +42,9 @@ export const resetData = () => ({
 export const setImageInputMode = (mode) => ({
   type: dataTypes.SET_IMAGE_INPUT_MODE,
   result: mode
+});
+
+export const setShowOrientationMsg = (showOrientationMsg) => ({
+  type: helperTypes.SET_SHOW_ORIENTATION_MSG,
+  showOrientationMsg
 });

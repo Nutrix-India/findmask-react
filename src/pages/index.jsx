@@ -1,46 +1,12 @@
-import React, { useContext, useEffect } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { lightTheme, mobile } from '@constants/index';
-import { getImage } from '@utils/imageHelper';
-import ImageInputHandler from '@composite/ImageInputHandler';
-import PreviewResponse from '@composite/PreviewResponse';
-import Analyze from '@composite/Analyze';
-import Footer from '@composite/Footer';
-import MetaTags from '@composite/MetaTags';
-import { Context as MobileContext } from '@contexts/MobileContext';
+import React, { useEffect } from 'react';
+import { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
+import { lightTheme } from '@constants/index';
+import Home from '@composite/Home';
+import { ContextProvider as MobileContextProvider } from '@contexts/MobileContext';
 import { initGA, logPageView } from '@utils/googleAnalytics';
 
-const Wrapper = styled.div`
-  text-align: center;
-  position: relative;
-  margin-bottom: 40px;
-  min-height: calc(100vh - 40px);
-`;
-
-const Header = styled.div`
-  height: 82px;
-  background-color: ${({ theme }) => theme.colors.paleGreen};
-  position: relative;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    height: 46px;
-  }
-`;
-
-const AppTitleContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  position: absolute;
-  bottom: -30px;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    bottom: -13px;
-  }
-`;
-
-const AppIcon = styled.img``;
-
-const Home = () => {
-  const isMobileDevice = useContext(MobileContext);
+const RootPage = ({ isServer, userAgent }) => {
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js';
@@ -56,25 +22,24 @@ const Home = () => {
 
   return (
     <ThemeProvider theme={lightTheme}>
-      <MetaTags />
-      <Wrapper>
-        <Header>
-          <AppTitleContainer>
-            <AppIcon
-              src={getImage(
-                isMobileDevice ? '/mobileLogoWithText.svg' : '/logoWithText.svg'
-              )}
-            />
-          </AppTitleContainer>
-        </Header>
-        <ImageInputHandler />
-        <PreviewResponse />
-        <Analyze />
-        <Footer />
-      </Wrapper>
-      {/* <script src="https://code.tidio.co/ilbww9aamhglal4qndltymn3aondvpdb.js" async /> */}
+      <MobileContextProvider isServer={isServer} userAgent={userAgent}>
+        <Home />
+      </MobileContextProvider>
     </ThemeProvider>
   );
 };
 
-export default Home;
+RootPage.propTypes = {
+  isServer: PropTypes.bool.isRequired,
+  userAgent: PropTypes.string.isRequired
+};
+
+RootPage.getInitialProps = ({ req }) => {
+  const isServer = !!req;
+  return {
+    isServer,
+    userAgent: isServer ? req.headers['user-agent'] : ''
+  };
+};
+
+export default RootPage;

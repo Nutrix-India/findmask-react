@@ -1,17 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { getImage } from '@utils/imageHelper';
 import { mobile } from '@constants/index';
+import AuthorsInfoText from '@base/AuthorsInfoText';
 
 const Wrapper = styled.div`
   margin: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
   left: 0;
   right: 0;
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    flex-direction: column;
+  }
 `;
 
 const Product = styled.div`
@@ -21,36 +26,52 @@ const Product = styled.div`
 `;
 
 const BrandLogo = styled.img`
-  height: 16px;
+  height: 12px;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     height: 10px;
   }
 `;
 
 const ProductTitle = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: 0.05rem;
   position: relative;
-  top: -2px;
+  color: ${({ theme }) => theme.colors.blueGreen};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     font-size: 12px;
-    top: 0px;
   }
 `;
 
-const Footer = () => {
+const StyledAuthorsText = styled(AuthorsInfoText)`
+  @media only screen and (max-width: ${mobile.maxWidth}) {
+    padding-bottom: 8px;
+  }
+`;
+
+const Footer = ({ className }) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
+      <StyledAuthorsText />
       <Product>
-        <ProductTitle>Product of &nbsp;</ProductTitle>
+        <ProductTitle>&copy; 2020 - All rights reserved.&nbsp;</ProductTitle>
         <div>
-          <BrandLogo src={getImage('/images/nutrixLogo.svg')} />
+          <BrandLogo
+            src={getImage('/images/nutrixLogo.svg')}
+            alt="nutrix brand logo"
+          />
         </div>
       </Product>
     </Wrapper>
   );
+};
+
+Footer.propTypes = {
+  className: PropTypes.string
+};
+
+Footer.defaultProps = {
+  className: ''
 };
 
 export default Footer;

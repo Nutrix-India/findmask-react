@@ -14,7 +14,7 @@ const InfoContainer = styled.div`
     width: 85%;
     border-width: 2px;
     padding: 8px 16px;
-    height: 64px;
+    height: 56px;
   }
 `;
 

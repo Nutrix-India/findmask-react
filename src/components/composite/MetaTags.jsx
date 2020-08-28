@@ -28,11 +28,27 @@ const MetaTags = () => {
       />
       <meta
         name="keywords"
-        content="mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenapalli, Vaishnavi Chityala, find mask"
+        content="mask, mask detection, recognition, REST api, AI, Deep Learning, object detection, Vinay Kudari, Jaswanth Sai Sattenapalli, Vaishnavi Chityala, find mask, mask detection online, covid detection online, covid"
       />
       <meta name="theme-color" content={lightTheme.colors.blueGreen} />
       <meta name="twitter:site" content="@nutrix-ind" />
       <meta property="og:site_name" content="Mask Detector" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/logo180.png" />
+      {/* <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="/favicon-32x32.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="/favicon-16x16.png"
+      /> */}
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="mask-icon" href="/logo180.png" color="#004267" />
+      <link rel="shortcut icon" href="/favicon.ico" />
     </Head>
   );
 };

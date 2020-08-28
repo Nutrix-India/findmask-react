@@ -22,7 +22,9 @@ export const lightTheme = {
     white: '#FFFFFF',
     black: '#000000',
     red: '#C2210E',
-    green: '#84C227'
+    green: '#84C227',
+    yellow: '#f7d325',
+    nutrixPrimary: '#0067FF'
   }
 };
 

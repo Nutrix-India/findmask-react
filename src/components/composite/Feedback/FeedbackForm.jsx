@@ -38,8 +38,10 @@ const Number = styled(Text)`
 
 const SubmitBtn = styled(Button)`
   padding: 8px 10px;
+  color: ${({ theme }) => theme.colors.white};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     margin-left: auto;
+    font-size: 16px;
   }
 `;
 
@@ -51,9 +53,7 @@ const NavBtn = styled.img`
 `;
 
 const Option = styled.div`
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    display: flex;
-  }
+  display: flex;
 `;
 
 const questions = [
@@ -106,24 +106,18 @@ const FeedbackForm = () => {
   };
   const dispatch = useDispatch();
   const onSubmit = () => {
-    const formObject = Object.keys(formQuestions).reduce(
-      (map, _questionIndex) => {
+    const formData = Object.keys(formQuestions).reduce(
+      (form, _questionIndex) => {
         // eslint-disable-next-line no-underscore-dangle
         const _question = formQuestions[_questionIndex];
-        return {
-          ...map,
-          [_question.formProp]: _question.value
-        };
+        form.append(_question.formProp, _question.value);
+        return form;
       },
-      {}
+      new FormData()
     );
-    dispatch(
-      sendFeedback({
-        image_id: response.image_id,
-        feedback: -1,
-        ...formObject
-      })
-    );
+    formData.append('image_id', response.image_id);
+    formData.append('feedback', -1);
+    dispatch(sendFeedback(formData));
   };
 
   const isMobile = useContext(MobileContext);
@@ -159,10 +153,7 @@ const FeedbackForm = () => {
         <NavBtn src={getImage('/images/next.svg')} onClick={setIndex(1)} />
       )}
       {questionIndex === questions.length - 1 && (
-        <SubmitBtn
-          label={isMobile ? <>&#10004;</> : 'Submit'}
-          onClick={onSubmit}
-        />
+        <SubmitBtn label={isMobile ? '\u2713' : 'Submit'} onClick={onSubmit} />
       )}
     </FormContainer>
   );

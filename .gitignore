@@ -29,3 +29,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 .env
+
+/out_publish/
+/out_functions/
+/404.html

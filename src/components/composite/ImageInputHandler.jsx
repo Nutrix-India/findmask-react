@@ -17,6 +17,7 @@ const FileInput = styled.input`
 const Title = styled(Text)`
   font-size: 16px;
   margin-top: 50px;
+  color: ${({ theme }) => theme.colors.blueGreen};
   @media only screen and (max-width: ${mobile.maxWidth}) {
     width: 66%;
     margin: auto;
@@ -50,12 +51,14 @@ const ImageInputHandler = () => {
   };
   const canvasDimensions = useCanvasDimensions();
   const handleImageLoad = (evt) => {
-    resizeAndStore({
-      file: evt.target.files[0],
-      dispatch,
-      width: canvasDimensions.width,
-      height: canvasDimensions.height
-    });
+    if (evt.target.files[0]) {
+      resizeAndStore({
+        file: evt.target.files[0],
+        dispatch,
+        width: canvasDimensions.width,
+        height: canvasDimensions.height
+      });
+    }
   };
   const onTakePicClick = () => {
     resetApp();
