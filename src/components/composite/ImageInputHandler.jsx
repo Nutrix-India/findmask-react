@@ -51,12 +51,14 @@ const ImageInputHandler = () => {
   };
   const canvasDimensions = useCanvasDimensions();
   const handleImageLoad = (evt) => {
-    resizeAndStore({
-      file: evt.target.files[0],
-      dispatch,
-      width: canvasDimensions.width,
-      height: canvasDimensions.height
-    });
+    if (evt.target.files[0]) {
+      resizeAndStore({
+        file: evt.target.files[0],
+        dispatch,
+        width: canvasDimensions.width,
+        height: canvasDimensions.height
+      });
+    }
   };
   const onTakePicClick = () => {
     resetApp();
