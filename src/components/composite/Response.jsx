@@ -1,16 +1,16 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable prefer-template */
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useContext, useMemo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
 import { desktopCanvasSize, mobile } from '@constants/index';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
-import { updateFaceClassesCounts } from '@actions/index';
 import { Context as MobileContext } from '@contexts/MobileContext';
 import Button from '@base/Button';
 import ButtonSwitch from '@base/ButtonSwitch';
-import TextBlock from '@base/Text';
 
 const jsonPrettyTheme = require('react-json-pretty/dist/monikai');
 
@@ -74,11 +74,7 @@ const ValueContainer = styled.div`
   margin-bottom: 12px;
 `;
 
-const Text = styled(TextBlock)`
-  display: inline-block;
-`;
-
-const Value = styled(Text)`
+const Value = styled.span`
   font-weight: bold;
 `;
 
@@ -102,7 +98,7 @@ const Color = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.blueGreen};
 `;
 
-const ColorInfoLabel = styled(TextBlock)`
+const ColorInfoLabel = styled.div`
   margin-left: 12px;
   position: relative;
   top: -2px;
@@ -224,24 +220,6 @@ const Response = ({ className, borderRadius }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response.image_details.face]);
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(
-      updateFaceClassesCounts({
-        faces: totalFaces,
-        faces_with_properly_worn_masks: facesWithProperMask,
-        faces_with_improperly_worn_masks: facesWithImproperMask,
-        faces_without_masks: facesWithoutMask
-      })
-    );
-  }, [
-    totalFaces,
-    facesWithProperMask,
-    facesWithImproperMask,
-    facesWithoutMask,
-    dispatch
-  ]);
-
   const onClickCopy = () => {
     if (copyStatus !== copyStates.copying) {
       setCopyStatus(copyStates.copying);
@@ -302,26 +280,26 @@ const Response = ({ className, borderRadius }) => {
         <>
           <TextResponse>
             <ValueContainer>
-              <Text>No. of faces: &nbsp;</Text>
+              No. of faces:&nbsp;
               <Value>{totalFaces}</Value>
             </ValueContainer>
             <ValueContainer>
-              <Text>No. of faces with proper masks: &nbsp;</Text>
+              No. of faces with proper masks:&nbsp;
               <Value>{facesWithProperMask}</Value>
             </ValueContainer>
             <ValueContainer>
-              <Text>No. of faces with improper masks: &nbsp;</Text>
+              No. of faces with improper masks:&nbsp;
               <Value>{facesWithImproperMask}</Value>
             </ValueContainer>
             <ValueContainer>
-              <Text>No. of faces without masks: &nbsp;</Text>
+              No. of faces without masks:&nbsp;
               <Value>{facesWithoutMask}</Value>
             </ValueContainer>
           </TextResponse>
           <ColorsInfo>
             {[
-              { color: theme.colors.green, desc: 'mask worn properly' },
-              { color: theme.colors.yellow, desc: 'mask worn improperly' },
+              { color: theme.colors.green, desc: 'wearing mask properly' },
+              { color: theme.colors.yellow, desc: 'wearing mask improperly' },
               { color: theme.colors.red, desc: 'not wearing mask' }
             ].map((colorInfo) => (
               <ColorInfo key={colorInfo.color}>
