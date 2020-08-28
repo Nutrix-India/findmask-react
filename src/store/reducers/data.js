@@ -53,6 +53,18 @@ const actionMap = {
       ...state,
       imageInputMode: result || imageInputModes.chooseFile
     };
+  },
+  [dataTypes.UPDATE_FACE_CLASSES_COUNTS](state, { result }) {
+    return {
+      ...state,
+      response: {
+        ...state.response,
+        image_details: {
+          ...state.response.image_details,
+          ...result
+        }
+      }
+    };
   }
 };
 

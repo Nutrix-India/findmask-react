@@ -48,3 +48,8 @@ export const setShowOrientationMsg = (showOrientationMsg) => ({
   type: helperTypes.SET_SHOW_ORIENTATION_MSG,
   showOrientationMsg
 });
+
+export const updateFaceClassesCounts = (countsObj) => ({
+  type: dataTypes.UPDATE_FACE_CLASSES_COUNTS,
+  result: countsObj
+});
