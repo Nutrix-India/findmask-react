@@ -101,7 +101,7 @@ const Color = styled.div`
 const ColorInfoLabel = styled.div`
   margin-left: 12px;
   position: relative;
-  top: -2px;
+  top: -3px;
 `;
 
 const JsonPretty = styled(JSONPretty)`
