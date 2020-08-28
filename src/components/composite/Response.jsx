@@ -2,14 +2,14 @@
 /* eslint-disable prefer-template */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useContext, useMemo } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, ThemeContext } from 'styled-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import JSONPretty from 'react-json-pretty';
 import { desktopCanvasSize, mobile } from '@constants/index';
 import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import { Context as MobileContext } from '@contexts/MobileContext';
-import Button from '@base/Button';
+// import Button from '@base/Button';
 import ButtonSwitch from '@base/ButtonSwitch';
 
 const jsonPrettyTheme = require('react-json-pretty/dist/monikai');
@@ -62,11 +62,46 @@ const ResponseContainer = styled.div`
 `;
 
 const TextResponse = styled.div`
-  flex: 1 1 auto;
   padding-top: 10px;
   float: right;
   border-radius: ${({ $borderRadius }) => `${$borderRadius}px`};
   color: ${({ theme }) => theme.colors.blueGreen};
+  text-align: left;
+  font-size: 14px;
+`;
+
+const ValueContainer = styled.div`
+  margin-bottom: 12px;
+`;
+
+const Value = styled.span`
+  font-weight: bold;
+`;
+
+const ColorsInfo = styled.div`
+  margin-top: auto;
+  color: ${({ theme }) => theme.colors.blueGreen};
+  font-size: 14px;
+`;
+
+const ColorInfo = styled.div`
+  padding: 6px 0px;
+  display: flex;
+  align-items: center;
+`;
+
+const Color = styled.div`
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  background-color: ${({ $color }) => $color};
+  border: 1px solid ${({ theme }) => theme.colors.blueGreen};
+`;
+
+const ColorInfoLabel = styled.div`
+  margin-left: 12px;
+  position: relative;
+  top: -2px;
 `;
 
 const JsonPretty = styled(JSONPretty)`
@@ -105,14 +140,14 @@ const StyledSwitch = styled(ButtonSwitch)`
   margin: 0px 12px;
 `;
 
-const CopyBtn = styled(Button)`
-  border-radius: 5px;
-  background-color: ${({ theme }) => theme.colors.blueGrey};
-  color: ${({ theme }) => theme.colors.white};
-  text-align: center;
-  padding: 5px;
-  font-size: 12px;
-`;
+// const CopyBtn = styled(Button)`
+//   border-radius: 5px;
+//   background-color: ${({ theme }) => theme.colors.blueGrey};
+//   color: ${({ theme }) => theme.colors.white};
+//   text-align: center;
+//   padding: 5px;
+//   font-size: 12px;
+// `;
 
 const HRule = styled.div`
   height: 1px;
@@ -134,7 +169,7 @@ const responseTypes = {
 
 const Response = ({ className, borderRadius }) => {
   const response = useSelector(({ data }) => data.response);
-  const threshold = useSelector(({ data }) => data.threshold);
+  // const threshold = useSelector(({ data }) => data.threshold);
   const [width, setWidth] = useState(0);
   const [copyStatus, setCopyStatus] = useState(copyStates.notUsed);
   const [responseType, setResponseType] = useState(responseTypes.text);
@@ -149,7 +184,8 @@ const Response = ({ className, borderRadius }) => {
   const [
     totalFaces,
     facesWithProperMask,
-    facesWithImproperMask
+    facesWithImproperMask,
+    facesWithoutMask
   ] = useMemo(() => {
     const map = response?.image_details?.face?.id;
     return Object.keys(map).reduce(
@@ -157,39 +193,36 @@ const Response = ({ className, borderRadius }) => {
         const _totalFaces = data[0];
         const _facesWithProperMask = data[1];
         const _facesWithImproperMask = data[2];
+        const _facesWithoutMask = data[3];
         return [
           _totalFaces + 1,
           _facesWithProperMask +
-            (map[faceId]?.proper_mask_confidence >=
-            threshold.proper_mask_detection_thresh
-              ? 1
-              : 0),
+            (map[faceId]?.pred_class === 'with_mask' ? 1 : 0),
           _facesWithImproperMask +
-            (map[faceId]?.improper_mask_confidence >=
-            threshold.improper_mask_detection_thresh
-              ? 1
-              : 0)
+            (map[faceId]?.pred_class === 'mask_weared_incorrect' ? 1 : 0),
+          _facesWithoutMask +
+            (map[faceId]?.pred_class === 'without_mask' ? 1 : 0)
         ];
       },
-      [0, 0, 0]
+      [0, 0, 0, 0]
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response.image_details.face]);
 
-  const onClickCopy = () => {
-    if (copyStatus !== copyStates.copying) {
-      setCopyStatus(copyStates.copying);
-      navigator.clipboard
-        .writeText(responseText)
-        .then(() => {
-          setCopyStatus(copyStates.copied);
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error(err);
-        });
-    }
-  };
+  // const onClickCopy = () => {
+  //   if (copyStatus !== copyStates.copying) {
+  //     setCopyStatus(copyStates.copying);
+  //     navigator.clipboard
+  //       .writeText(responseText)
+  //       .then(() => {
+  //         setCopyStatus(copyStates.copied);
+  //       })
+  //       .catch((err) => {
+  //         // eslint-disable-next-line no-console
+  //         console.error(err);
+  //       });
+  //   }
+  // };
 
   useEffect(() => {
     if (copyStatus === copyStates.copied) {
@@ -204,6 +237,8 @@ const Response = ({ className, borderRadius }) => {
 
   const isMobile = useContext(MobileContext);
   const canvasDimensions = useCanvasDimensions();
+  const theme = useContext(ThemeContext);
+
   return (
     <ResponseContainer
       $borderRadius={borderRadius}
@@ -225,10 +260,43 @@ const Response = ({ className, borderRadius }) => {
             onClick: onResponseTypeChange(responseTypes.json)
           }}
         />
-        <CopyBtn label={copyStatus} onClick={onClickCopy} />
+        {/* <CopyBtn label={copyStatus} onClick={onClickCopy} /> */}
       </HeaderContainer>
       <HRule />
-      {responseType === responseTypes.text && <TextResponse />}
+      {responseType === responseTypes.text && (
+        <>
+          <TextResponse>
+            <ValueContainer>
+              No. of faces:&nbsp;
+              <Value>{totalFaces}</Value>
+            </ValueContainer>
+            <ValueContainer>
+              No. of faces with proper masks:&nbsp;
+              <Value>{facesWithProperMask}</Value>
+            </ValueContainer>
+            <ValueContainer>
+              No. of faces with improper masks:&nbsp;
+              <Value>{facesWithImproperMask}</Value>
+            </ValueContainer>
+            <ValueContainer>
+              No. of faces without masks:&nbsp;
+              <Value>{facesWithoutMask}</Value>
+            </ValueContainer>
+          </TextResponse>
+          <ColorsInfo>
+            {[
+              { color: theme.colors.green, desc: 'wearing mask properly' },
+              { color: theme.colors.yellow, desc: 'wearing mask improperly' },
+              { color: theme.colors.red, desc: 'not wearing mask' }
+            ].map((colorInfo) => (
+              <ColorInfo key={colorInfo.color}>
+                <Color $color={colorInfo.color} />
+                <ColorInfoLabel>{colorInfo.desc}</ColorInfoLabel>
+              </ColorInfo>
+            ))}
+          </ColorsInfo>
+        </>
+      )}
       {responseType === responseTypes.json && (
         <JsonPretty
           $width={width}
