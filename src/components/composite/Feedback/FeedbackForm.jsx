@@ -13,9 +13,6 @@ const FormContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  @media only screen and (max-width: ${mobile.maxWidth}) {
-    flex-wrap: wrap;
-  }
 `;
 
 const Question = styled.div`
@@ -58,16 +55,31 @@ const Option = styled.div`
 
 const questions = [
   {
-    text: 'Number of faces',
+    text: 'No. of faces',
     prop: 'faces',
     formProp: 'actual_no_of_faces',
     style: {},
     optionStyle: {}
   },
   {
-    text: 'Number of faces with the masks',
+    text: 'No. of faces with the masks',
     prop: 'faces_with_mask',
     formProp: 'actual_no_of_faces_with_masks',
+    style: {
+      mobile: {
+        flexDirection: 'column'
+      }
+    },
+    optionStyle: {
+      mobile: {
+        marginTop: '10px'
+      }
+    }
+  },
+  {
+    text: 'No. of faces with the masks worn improperly',
+    prop: 'faces_with_mask_worn_improperly',
+    formProp: 'actual_no_of_faces_with_masks_worn_improperly',
     style: {
       mobile: {
         flexDirection: 'column'

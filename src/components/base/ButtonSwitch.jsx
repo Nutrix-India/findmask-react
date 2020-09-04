@@ -33,13 +33,13 @@ const Btn = styled(Text)`
 `;
 
 const LeftBtn = styled(Btn)`
-  border-top-left-radius: ${borderRadius}px;
-  border-bottom-left-radius: ${borderRadius}px;
+  border-top-left-radius: ${borderRadius - 2}px;
+  border-bottom-left-radius: ${borderRadius - 2}px;
 `;
 
 const RightBtn = styled(Btn)`
-  border-top-right-radius: ${borderRadius}px;
-  border-bottom-right-radius: ${borderRadius}px;
+  border-top-right-radius: ${borderRadius - 2}px;
+  border-bottom-right-radius: ${borderRadius - 2}px;
 `;
 
 const noOp = () => {};

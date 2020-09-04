@@ -222,7 +222,7 @@ const ImagePreview = ({ className, borderRadius }) => {
         ctx.strokeRect(x, y, width, height);
         // fill rect for id
         ctx.fillStyle = targetColor;
-        const fontSize = Math.round(width / 6.43);
+        const fontSize = Math.min(14, Math.round(width / 6.43));
         const lineHeight = fontSize * 1.58;
         const padding = lineHeight / 2;
         const idBoxHeight = lineHeight;
@@ -251,8 +251,8 @@ const ImagePreview = ({ className, borderRadius }) => {
   return (
     <CanvasContainer
       className={className || ''}
-      width={imageDimensions.width}
-      height={imageDimensions.height}
+      $width={imageDimensions.width}
+      $height={imageDimensions.height}
       $borderRadius={borderRadius}
     >
       <Icon
