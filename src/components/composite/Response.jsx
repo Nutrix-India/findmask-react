@@ -53,13 +53,13 @@ const ResponseContainer = styled.div`
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: forwards;
+  position: relative;
   @media only screen and (max-width: ${mobile.maxWidth}) {
     height: ${({ $height }) => $height}px;
     margin-left: 0px;
     margin-top: 20px;
     width: ${({ $width }) => $width}px;
     transform: scale(0.5);
-    position: relative;
   }
 `;
 
