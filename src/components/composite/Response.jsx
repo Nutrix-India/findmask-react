@@ -200,17 +200,25 @@ const Response = ({ className, borderRadius }) => {
         let _facesWithProperMask = data[1];
         let _facesWithImproperMask = data[2];
         let _facesWithoutMask = data[3];
-        if (map[faceId]?.pred_class === 'with_mask') {
+        if (
+          map[faceId]?.proper_mask_confidence >=
+          threshold.proper_mask_detection_thresh
+        ) {
+          _facesWithProperMask += 1;
+        } else if (map[faceId]?.pred_class === 'mask_weared_incorrect') {
           if (
-            map[faceId]?.proper_mask_confidence >=
-            threshold.proper_mask_detection_thresh
+            map[faceId]?.improper_mask_confidence >=
+            threshold.improper_mask_detection_thresh
+          ) {
+            _facesWithImproperMask += 1;
+          } else if (
+            map[faceId]?.proper_mask_confidence >
+            map[faceId]?.without_mask_confidence
           ) {
             _facesWithProperMask += 1;
           } else {
-            _facesWithImproperMask += 1;
+            _facesWithoutMask += 1;
           }
-        } else if (map[faceId]?.pred_class === 'mask_weared_incorrect') {
-          _facesWithImproperMask += 1;
         } else {
           _facesWithoutMask += 1;
         }
