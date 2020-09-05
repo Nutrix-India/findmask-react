@@ -189,19 +189,25 @@ const ImagePreview = ({ className, borderRadius }) => {
       Object.keys(allFaces).forEach((faceId) => {
         const face = allFaces[faceId];
         let targetColor = faceColor;
-        if (face.pred_class === 'without_mask') {
-          targetColor = faceColor;
-        } else if (face.pred_class === 'with_mask') {
+        if (
+          face.proper_mask_confidence >= threshold.proper_mask_detection_thresh
+        ) {
+          targetColor = properMaskFaceColor;
+        } else if (face.pred_class === 'mask_weared_incorrect') {
           if (
-            face.proper_mask_confidence >=
-            threshold.proper_mask_detection_thresh
+            face.improper_mask_confidence >=
+            threshold.improper_mask_detection_thresh
+          ) {
+            targetColor = improperMaskFaceColor;
+          } else if (
+            face.proper_mask_confidence > face.without_mask_confidence
           ) {
             targetColor = properMaskFaceColor;
           } else {
-            targetColor = improperMaskFaceColor;
+            targetColor = faceColor;
           }
-        } else if (face.pred_class === 'mask_weared_incorrect') {
-          targetColor = improperMaskFaceColor;
+        } else {
+          targetColor = faceColor;
         }
         const { x1: x, y1: y, width, height } = face.face_coordinates;
         // const [
@@ -222,7 +228,7 @@ const ImagePreview = ({ className, borderRadius }) => {
         ctx.strokeRect(x, y, width, height);
         // fill rect for id
         ctx.fillStyle = targetColor;
-        const fontSize = Math.round(width / 6.43);
+        const fontSize = Math.min(14, Math.round(width / 6.43));
         const lineHeight = fontSize * 1.58;
         const padding = lineHeight / 2;
         const idBoxHeight = lineHeight;
@@ -251,8 +257,8 @@ const ImagePreview = ({ className, borderRadius }) => {
   return (
     <CanvasContainer
       className={className || ''}
-      width={imageDimensions.width}
-      height={imageDimensions.height}
+      $width={imageDimensions.width}
+      $height={imageDimensions.height}
       $borderRadius={borderRadius}
     >
       <Icon

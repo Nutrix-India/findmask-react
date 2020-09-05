@@ -11,6 +11,7 @@ import useCanvasDimensions from '@hooks/useCanvasDimensions';
 import { Context as MobileContext } from '@contexts/MobileContext';
 import Button from '@base/Button';
 import ButtonSwitch from '@base/ButtonSwitch';
+import Text from '@base/Text';
 
 const jsonPrettyTheme = require('react-json-pretty/dist/monikai');
 
@@ -52,8 +53,9 @@ const ResponseContainer = styled.div`
   animation-iteration-count: 1;
   animation-direction: normal;
   animation-fill-mode: forwards;
+  position: relative;
   @media only screen and (max-width: ${mobile.maxWidth}) {
-    max-height: ${({ $height }) => $height}px;
+    height: ${({ $height }) => $height}px;
     margin-left: 0px;
     margin-top: 20px;
     width: ${({ $width }) => $width}px;
@@ -70,7 +72,7 @@ const TextResponse = styled.div`
   font-size: 14px;
 `;
 
-const ValueContainer = styled.div`
+const ValueContainer = styled(Text)`
   margin-bottom: 12px;
 `;
 
@@ -82,26 +84,26 @@ const ColorsInfo = styled.div`
   margin-top: auto;
   color: ${({ theme }) => theme.colors.blueGreen};
   font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
 `;
 
 const ColorInfo = styled.div`
   padding: 6px 0px;
-  display: flex;
   align-items: center;
 `;
 
 const Color = styled.div`
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  border-radius: 4px;
+  width: 18px;
+  height: 8px;
   background-color: ${({ $color }) => $color};
-  border: 1px solid ${({ theme }) => theme.colors.blueGreen};
 `;
 
-const ColorInfoLabel = styled.div`
-  margin-left: 12px;
+const ColorInfoLabel = styled(Text)`
   position: relative;
-  top: -2px;
+  line-height: normal;
 `;
 
 const JsonPretty = styled(JSONPretty)`
@@ -142,11 +144,15 @@ const StyledSwitch = styled(ButtonSwitch)`
 
 const CopyBtn = styled(Button)`
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.colors.blueGrey};
-  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.paleGreen};
+  color: ${({ theme }) => theme.colors.blueGreen};
+  border: 1px solid ${({ theme }) => theme.colors.blueGreen};
   text-align: center;
   padding: 5px;
   font-size: 12px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 `;
 
 const HRule = styled.div`
@@ -194,17 +200,25 @@ const Response = ({ className, borderRadius }) => {
         let _facesWithProperMask = data[1];
         let _facesWithImproperMask = data[2];
         let _facesWithoutMask = data[3];
-        if (map[faceId]?.pred_class === 'with_mask') {
+        if (
+          map[faceId]?.proper_mask_confidence >=
+          threshold.proper_mask_detection_thresh
+        ) {
+          _facesWithProperMask += 1;
+        } else if (map[faceId]?.pred_class === 'mask_weared_incorrect') {
           if (
-            map[faceId]?.proper_mask_confidence >=
-            threshold.proper_mask_detection_thresh
+            map[faceId]?.improper_mask_confidence >=
+            threshold.improper_mask_detection_thresh
+          ) {
+            _facesWithImproperMask += 1;
+          } else if (
+            map[faceId]?.proper_mask_confidence >
+            map[faceId]?.without_mask_confidence
           ) {
             _facesWithProperMask += 1;
           } else {
-            _facesWithImproperMask += 1;
+            _facesWithoutMask += 1;
           }
-        } else if (map[faceId]?.pred_class === 'mask_weared_incorrect') {
-          _facesWithImproperMask += 1;
         } else {
           _facesWithoutMask += 1;
         }
@@ -298,9 +312,9 @@ const Response = ({ className, borderRadius }) => {
           </TextResponse>
           <ColorsInfo>
             {[
-              { color: theme.colors.green, desc: 'wearing mask properly' },
-              { color: theme.colors.yellow, desc: 'wearing mask improperly' },
-              { color: theme.colors.red, desc: 'not wearing mask' }
+              { color: theme.colors.green, desc: 'worn properly' },
+              { color: theme.colors.yellow, desc: 'worn improperly' },
+              { color: theme.colors.red, desc: 'no mask' }
             ].map((colorInfo) => (
               <ColorInfo key={colorInfo.color}>
                 <Color $color={colorInfo.color} />
